@@ -5,38 +5,34 @@
 #include <Windows.h>
 using namespace std;
 
+// тут я роблю клас String
 class String {
 private:
-    char* zminna; // масив для символів
-    int dovzhyna; // довжина рядка
-
-    // функція щоб порахувати довжину рядка
-    static int porahuyDovzhynu(const char* str) {
-        int k = 0;
-        while (str[k] != '\0') {
-            k++;
-        }
-        return k;
-    }
+    char* zminna; 
+    int dovzhyna;
 
 public:
-    // конструктор за замовчуванням, створює пустий рядок
+    // конструктор по замовчуванню, створює пустий рядок
     String() {
         dovzhyna = 0;
         zminna = new char[1];
         zminna[0] = '\0';
-        // тут нічого нема, але масив все одно є
+        // тут створюю пустий рядок
     }
 
     // конструктор з параметром, приймає const char*
     String(const char* str) {
-        dovzhyna = porahuyDovzhynu(str);
+        // рахую довжину
+        dovzhyna = 0;
+        while (str[dovzhyna] != '\0') {
+            dovzhyna++;
+        }
         zminna = new char[dovzhyna + 1];
+        // копіюю по одному символу
         for (int i = 0; i < dovzhyna; i++) {
             zminna[i] = str[i];
         }
         zminna[dovzhyna] = '\0';
-        // тут копіюю символи з str у свій масив
     }
 
     // конструктор копіювання
@@ -47,91 +43,82 @@ public:
             zminna[i] = other.zminna[i];
         }
         zminna[dovzhyna] = '\0';
-        // тут копіюю з іншого об'єкта
-    }
-
-    // конструктор переміщення
-    String(String&& other) noexcept {
-        dovzhyna = other.dovzhyna;
-        zminna = other.zminna;
-        other.zminna = nullptr;
-        other.dovzhyna = 0;
-        // тут просто забираю чужий масив і роблю той об'єкт пустим
-    }
-
-    // оператор присвоєння з копіюванням
-    String& operator=(const String& other) {
-        if (this == &other) return *this; // перевіряю на самоприсвоєння
-        if (zminna) delete[] zminna;
-        dovzhyna = other.dovzhyna;
-        zminna = new char[dovzhyna + 1];
-        for (int i = 0; i < dovzhyna; i++) {
-            zminna[i] = other.zminna[i];
-        }
-        zminna[dovzhyna] = '\0';
-        // тут копіюю символи з іншого рядка
-        return *this;
-    }
-
-    // оператор присвоєння з переміщенням
-    String& operator=(String&& other) noexcept {
-        if (this == &other) return *this; // перевіряю на самоприсвоєння
-        if (zminna) delete[] zminna;
-        dovzhyna = other.dovzhyna;
-        zminna = other.zminna;
-        other.zminna = nullptr;
-        other.dovzhyna = 0;
-        // просто забираю чужий масив і роблю той об'єкт пустим
-        return *this;
+        // тут просто копіюю все з іншого String
     }
 
     // деструктор
     ~String() {
         delete[] zminna;
-        // тут видаляю пам'ять, щоб не було утечки
+        // тут видаляю той масив, бо інакше буде утечка пам'яті
     }
 
-    // метод щоб отримати довжину
+    // метод щоб отримати довжину рядка
     int GetDovzhyna() const {
         return dovzhyna;
+        // повертаю довжину
     }
 
-    // метод щоб отримати масив символів
+    // метод щоб отримати сам рядок
+    String GetString() const {
+        return *this;
+        // повертаю цей рядок як новий String
+    }
+
+    // метод щоб отримати рядок як const char*
     const char* GetConstChar() const {
         return zminna;
+        // повертаю просто масив символів
+    }
+
+    // оператор + для конкатенації рядків
+    String operator+(const String& right) const {
+        int newLen = dovzhyna + right.dovzhyna;
+        char* novaZminna = new char[newLen + 1];
+        // копіюю свій рядок
+        for (int i = 0; i < dovzhyna; i++) {
+            novaZminna[i] = zminna[i];
+        }
+        // копіюю другий рядок
+        for (int i = 0; i < right.dovzhyna; i++) {
+            novaZminna[dovzhyna + i] = right.zminna[i];
+        }
+        novaZminna[newLen] = '\0';
+        // тут з'єдную два рядки в один
+
+        String result(novaZminna);
+        delete[] novaZminna;
+        // створюю новий рядок, а потім видаляю тимчасовий масив
+        return result;
     }
 };
 
 // функція щоб показати рядок
 void printString(const String& str) {
     cout << "рядок: " << str.GetConstChar() << endl;
+    // просто виводить рядок на екран
 }
 
 int main() {
     SetConsoleOutputCP(1251);
 
-    // створюю рядки
+    // створюю пару рядків
     String z1("привіт");
-    printString(z1);
+    String z2(" світ!");
 
-    // копіюю рядок
-    String z2 = z1;
-    printString(z2);
+    printString(z1); // показую перший
+    printString(z2); // показую другий
 
-    // присвоєння з копіюванням
-    String z3;
-    z3 = z1;
-    printString(z3);
-
-    // переміщення через конструктор
-    String z4 = std::move(z3);
-    printString(z4);
-
-    // присвоєння з переміщенням
-    String z5;
-    z5 = std::move(z4);
-    printString(z5);
+    // конкатеную рядки
+    String z3 = z1 + z2;
+    printString(z3); // показую результат
 
     // показую довжину
-    cout << "довжина: " << z5.GetDovzhyna() << endl;
+    cout << "довжина: " << z3.GetDovzhyna() << endl;
+
+    // отримую рядок як const char*
+    cout << "рядок як const char*: " << z3.GetConstChar() << endl;
+
+    // копіюю рядок
+    String z4 = z3;
+    printString(z4); // показую копію
 }
