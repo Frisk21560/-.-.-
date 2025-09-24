@@ -4,203 +4,85 @@
 #include <iostream>
 #include <Windows.h>
 using namespace std;
-// Клас Людина, тут я зберігаю ПІБ ті вік
-class Lyudyna {
+
+class String {
 private:
-    char* fio; // ПІБ
-    int vik; // Вік
+    char* zminna; // тут зберігається текст
+    int rozmir;   // розмір стрічки
 
 public:
-    // Конструктор по замовчуванню
-    Lyudyna() : Lyudyna(nullptr, 0) {}
+    // Конструктор з C-стрічки
+    String(const char* tekst) {
+        if (tekst == nullptr) {
+            zminna = nullptr;
+            rozmir = 0;
+            return;
+        }
+        // шукаємо розмір
+        rozmir = 0;
+        while (tekst[rozmir] != '\0') {
+            rozmir++;
+        }
+        zminna = new char[rozmir + 1];
+        for (int i = 0; i < rozmir; i++) {
+            zminna[i] = tekst[i];
+        }
+        zminna[rozmir] = '\0';
+    }
 
-    // Конструктор з параметрами
-    Lyudyna(const char* zminnaFio, int zminnaVik) : vik(zminnaVik) {
-        if (zminnaFio == nullptr)
-            fio = nullptr;
-        else {
-            fio = new char[strlen(zminnaFio) + 1];
-            strcpy_s(fio, strlen(zminnaFio) + 1, zminnaFio);
+    // Деструктор (щоб не було утечки пам'яті)
+    ~String() {
+        if (zminna) {
+            delete[] zminna;
         }
     }
 
-    // Конструктор копіювання
-    Lyudyna(const Lyudyna& other) {
-        if (other.fio == nullptr)
-            fio = nullptr;
-        else {
-            fio = new char[strlen(other.fio) + 1];
-            strcpy_s(fio, strlen(other.fio) + 1, other.fio);
+    // Перевантаження оператору [] для доступу до символів
+    char& operator[](int indeks) {
+        // Перевіряємо на вихід за межі
+        if (indeks < 0 || indeks >= rozmir) {
+            cout << "Oshibka: indeks za mezhami!" << endl;
+            // Тут повертаємо перший символ, ну бо треба щось повертати
+            // В реальному коді краще викидати exception
+            return zminna[0];
         }
-        vik = other.vik;
+        return zminna[indeks];
     }
 
-    // Деструктор
-    ~Lyudyna() {
-        if (fio) delete[] fio;
-    }
-
-    // Метод для зміни ПІБ
-    Lyudyna& SetFio(const char* newFio) {
-        if (fio) delete[] fio;
-        if (newFio == nullptr)
-            fio = nullptr;
-        else {
-            fio = new char[strlen(newFio) + 1];
-            strcpy_s(fio, strlen(newFio) + 1, newFio);
+    // Для константних об'єктів
+    char operator[](int indeks) const {
+        if (indeks < 0 || indeks >= rozmir) {
+            cout << "Oshibka: indeks za mezhami!" << endl;
+            return zminna[0];
         }
-        return *this;
+        return zminna[indeks];
     }
 
-    // Метод для зміни віку
-    Lyudyna& SetVik(int newVik) {
-        vik = newVik;
-        return *this;
-    }
-
-    // Вивід інформації
-    void Print() {
-        cout << "ПІБ: " << (fio ? fio : "нема") << endl;
-        cout << "Вік: " << vik << endl;
-        cout << "Адреса об'єкту: " << this << endl;
-    }
-};
-
-// Клас Квартира, тут масив людей
-class Kvartyra {
-private:
-    Lyudyna* masyvLyudey; // Массив людей
-    int kilkistLyudey; // Скільки людей у квартирі
-
-public:
-    // Конструктор по замовчуванню
-    Kvartyra() : Kvartyra(nullptr, 0) {}
-
-    // Конструктор з параметрами
-    Kvartyra(Lyudyna* masyv, int k) : kilkistLyudey(k) {
-        if (k == 0 || masyv == nullptr) {
-            masyvLyudey = nullptr;
-            kilkistLyudey = 0;
-        }
-        else {
-            masyvLyudey = new Lyudyna[k];
-            for (int i = 0; i < k; ++i) {
-                masyvLyudey[i] = masyv[i]; // Викликається конструктор копіювання для Lyudyna
-            }
-        }
-    }
-
-    // Конструктор копіювання
-    Kvartyra(const Kvartyra& other) {
-        kilkistLyudey = other.kilkistLyudey;
-        if (kilkistLyudey == 0 || other.masyvLyudey == nullptr) {
-            masyvLyudey = nullptr;
-        }
-        else {
-            masyvLyudey = new Lyudyna[kilkistLyudey];
-            for (int i = 0; i < kilkistLyudey; ++i) {
-                masyvLyudey[i] = other.masyvLyudey[i];
-            }
-        }
-    }
-
-    // Деструктор
-    ~Kvartyra() {
-        if (masyvLyudey) delete[] masyvLyudey;
-    }
-
-    // Вивід інформації про всіх людей
-    void Print() {
-        cout << "Квартира (адреса об'єкту: " << this << ") містить " << kilkistLyudey << " людей:" << endl;
-        for (int i = 0; i < kilkistLyudey; ++i) {
-            cout << "  Людина #" << i + 1 << ":" << endl;
-            masyvLyudey[i].Print();
-        }
-    }
-};
-
-// Клас Дім, тут масив квартир
-class Dim {
-private:
-    Kvartyra* masyvKvartyr; // Массів квартир
-    int kilkistKvartyr; // Скільки квартир у домі
-
-public:
-    // Конструктор по замовчуванню
-    Dim() : Dim(nullptr, 0) {}
-
-    // Конструктор з параметрами
-    Dim(Kvartyra* masyv, int k) : kilkistKvartyr(k) {
-        if (k == 0 || masyv == nullptr) {
-            masyvKvartyr = nullptr;
-            kilkistKvartyr = 0;
-        }
-        else {
-            masyvKvartyr = new Kvartyra[k];
-            for (int i = 0; i < k; ++i) {
-                masyvKvartyr[i] = masyv[i]; // Викликається конструктор копіювання для Kvartyra
-            }
-        }
-    }
-
-    // Конструктор копіювання
-    Dim(const Dim& other) {
-        kilkistKvartyr = other.kilkistKvartyr;
-        if (kilkistKvartyr == 0 || other.masyvKvartyr == nullptr) {
-            masyvKvartyr = nullptr;
-        }
-        else {
-            masyvKvartyr = new Kvartyra[kilkistKvartyr];
-            for (int i = 0; i < kilkistKvartyr; ++i) {
-                masyvKvartyr[i] = other.masyvKvartyr[i];
-            }
-        }
-    }
-
-    // Деструктор
-    ~Dim() {
-        if (masyvKvartyr) delete[] masyvKvartyr;
-    }
-
-    // Вивід інформації про всі квартири
-    void Print() {
-        cout << "Дім (адреса об'єкту: " << this << ") містить " << kilkistKvartyr << " квартир:" << endl;
-        for (int i = 0; i < kilkistKvartyr; ++i) {
-            cout << "\nКвартира #" << i + 1 << ":" << endl;
-            masyvKvartyr[i].Print();
+    // Проста функція для виводу рядка
+    void Vivesti() const {
+        if (zminna) {
+            cout << zminna << endl;
         }
     }
 };
 
 int main() {
     SetConsoleOutputCP(1251);
-    // Створюю людей
-    Lyudyna lyudynyVkvartiri1[] = {
-        Lyudyna("Іван Іванов", 20),
-        Lyudyna("Петро Петренко", 25)
-    };
-    Lyudyna lyudynyVkvartiri2[] = {
-        Lyudyna("Оля Іванова", 30)
-    };
+    // Створюємо свій стрінг
+    String str("privit, ya string!");
 
-    // Створюю квартири, передаю масив людей
-    Kvartyra kvartira1(lyudynyVkvartiri1, 2);
-    Kvartyra kvartira2(lyudynyVkvartiri2, 1);
+    // Виводимо весь рядок
+    str.Vivesti();
 
-    // Створюю масив квартир для дому
-    Kvartyra kvartiriVDomi[] = { kvartira1, kvartira2 };
+    // Доступ до символу через []
+    cout << "Simvol na 3 mistsi: " << str[2] << endl;
 
-    // Створюю дім
-    Dim dim1(kvartiriVDomi, 2);
+    // Змінюємо символ через []
+    str[0] = 'P';
+    str.Vivesti();
 
-    // Вивожу все
-    dim1.Print();
+    // Некоректний індекс
+    cout << str[99] << endl;
 
-    // Тестую копіювання
-    cout << "\n--- Тест копіювання дому ---\n";
-    Dim dim2(dim1);
-    dim2.Print();
-
-    // Тут все має видалитись нормально, бо є деструктори
     return 0;
 }
