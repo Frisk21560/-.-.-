@@ -1,24 +1,29 @@
 #pragma once
+#ifndef GROUP_H
+#define GROUP_H
+
+#include <string>
+#include <vector>
 #include "Student.h"
 
-// Клас група
+// Клас група: має імя групи і вектор студентів
 class Group {
 private:
-    char* nazva; 
-    Student* massiv; 
-    int kilkist; 
+    std::string gname;           // назва групи
+    std::vector<Student> studs;  // вектор студентів, замість динамічного масиву
+
 public:
-    Group(); // конструктор
-    Group(const char* zmina); // конструктор з назвою
-    Group(const Group& zmina); // копіконструктор
-    ~Group(); // деструктор
+    Group();                    // конструктор за замовчуванням
+    Group(const std::string& name); // конструктор з іменем
 
-    void SetNazva(const char* zmina); // змінити назву
-    char* GetNazva() const; // повертає назву
+    void setName(const std::string& name); // встановити імя групи
+    std::string getName() const;           // отримати імя групи
 
-    void DodatyStudent(const char* imya); // додає студента
-    void VudalutyStudenta(int nomer); // видаляє студента
-    void VivestyStudentiv() const; // показати студентів
+    void addStudent(const Student& s);     // додати студента
+    bool removeStudentByName(const std::string& name); // видалити студента по імені
 
-    int GetKilkist() const; // скільки студентів
+    void printAll() const;                 // вивести інформацію про всіх студентів
+    std::size_t size() const;              // кількість студентів
 };
+
+#endif // GROUP_H

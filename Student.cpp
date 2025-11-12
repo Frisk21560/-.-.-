@@ -1,77 +1,51 @@
-п»ї// Student.cpp : Р­С‚РѕС‚ С„Р°Р№Р» СЃРѕРґРµСЂР¶РёС‚ С„СѓРЅРєС†РёСЋ "main". Р—РґРµСЃСЊ РЅР°С‡РёРЅР°РµС‚СЃСЏ Рё Р·Р°РєР°РЅС‡РёРІР°РµС‚СЃСЏ РІС‹РїРѕР»РЅРµРЅРёРµ РїСЂРѕРіСЂР°РјРјС‹.
-//
-
 #include "Student.h"
 #include <iostream>
 
-// СЂР°С…СѓСЋ РґРѕРІР¶РёРЅСѓ СЃС‚СЂРѕРєРё
-int my_strlen(const char* s) {
-    int k = 0;
-    if (!s) return 0;
-    while (s[k] != '\0') k++;
-    return k;
+// Конструктор за замовчуванням, імя "noName", пусті оцінки
+Student::Student()
+    : name("noName"), grades()
+{
+    // нічого особливого, просто ініціалізація
 }
 
-// РєРѕРїС–СЋСЋ СЃС‚СЂРѕРєСѓ
-void my_strcpy(char* dst, const char* src) {
-    int i = 0;
-    while (src && src[i] != '\0') {
-        dst[i] = src[i];
-        i++;
-    }
-    dst[i] = '\0';
+// Конструктор з іменем
+Student::Student(const std::string& name)
+    : name(name), grades()
+{
+    // записали імя
 }
 
-// С‚СѓС‚ РїСЂРѕСЃС‚Рѕ РЅСѓР»СЊ
-Student::Student() {
-    imya = nullptr;
+// Конструктор з іменем і оцінками
+Student::Student(const std::string& name, const std::vector<int>& grades)
+    : name(name), grades(grades)
+{
+    // скопіювали все
 }
 
-// СЃС‚РІРѕСЂСЋСЋ СЃС‚СЂРѕРєСѓ РґР»СЏ С–РјРµРЅС–
-Student::Student(const char* zmina) {
-    if (zmina != nullptr) {
-        int len = my_strlen(zmina);
-        imya = new char[len + 1];
-        my_strcpy(imya, zmina);
-    }
-    else {
-        imya = nullptr;
-    }
+// Додаємо оцінку в вектор оцінок
+void Student::addGrade(int g)
+{
+    grades.push_back(g); // push_back як у вчителя
 }
 
-// РєРѕРїС–СЋСЋ СЃС‚СѓРґРµРЅС‚Р°
-Student::Student(const Student& zmina) {
-    if (zmina.imya != nullptr) {
-        int len = my_strlen(zmina.imya);
-        imya = new char[len + 1];
-        my_strcpy(imya, zmina.imya);
-    }
-    else {
-        imya = nullptr;
-    }
+// Повертаємо імя
+std::string Student::getName() const
+{
+    return name;
 }
 
-// РІРёРґР°Р»СЏСЋ РїР°Рј'СЏС‚СЊ
-Student::~Student() {
-    if (imya != nullptr) delete[] imya;
+// Повертаємо копію вектору оцінок
+std::vector<int> Student::getGrades() const
+{
+    return grades;
 }
 
-// Р·РјС–РЅРёС‚Рё С–Рј'СЏ
-void Student::SetImya(const char* zmina) {
-    if (imya != nullptr) {
-        delete[] imya;
+// Виводимо імя і всі оцінки
+void Student::print() const
+{
+    std::cout << "Імя: " << name << " | Оцінки: ";
+    for (int x : grades) {          // перебираємо оцінки як у вчителя (range-for)
+        std::cout << x << " ";
     }
-    if (zmina != nullptr) {
-        int len = my_strlen(zmina);
-        imya = new char[len + 1];
-        my_strcpy(imya, zmina);
-    }
-    else {
-        imya = nullptr;
-    }
-}
-
-// РїРѕРІРµСЂС‚Р°СЋ С–Рј'СЏ
-char* Student::GetImya() const {
-    return imya;
+    std::cout << std::endl;
 }

@@ -1,15 +1,26 @@
 #pragma once
+#ifndef STUDENT_H
+#define STUDENT_H
 
-// Клас студент
+#include <string>
+#include <vector>
+
+// Простий студент: імя і список оцінок
 class Student {
 private:
-    char* imya; // ім'я студента
-public:
-    Student(); // конструктор
-    Student(const char* zmina); // конструктор з ім'ям
-    Student(const Student& zmina); // копіконструктор
-    ~Student(); // деструктор
+    std::string name;           // тут ім'я студента
+    std::vector<int> grades;    // і тут його оцінки
 
-    void SetImya(const char* zmina); // змінити ім'я
-    char* GetImya() const; // повертає ім'я
+public:
+    Student();                                  // конструктор за замовчуванням
+    Student(const std::string& name);           // конструктор з іменем
+    Student(const std::string& name, const std::vector<int>& grades); // з іменем і оцінками
+
+    void addGrade(int g);           // додати оцінку
+    std::string getName() const;    // отримати імя
+    std::vector<int> getGrades() const; // отримати вектор оцінок
+
+    void print() const;             // вивести інфу про студента
 };
+
+#endif // STUDENT_H

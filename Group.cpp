@@ -1,132 +1,69 @@
 #include "Group.h"
 #include <iostream>
+#include <algorithm> // для find_if
 
-// рахую довжину строки
-int my_strlen_g(const char* s) {
-    int k = 0;
-    if (!s) return 0;
-    while (s[k] != '\0') k++;
-    return k;
+// Конструктор за замовчуванням
+Group::Group()
+    : gname("noGroup"), studs()
+{
+    // резервнемо трохи місця, щоб було як у вчителя з reserve
+    studs.reserve(4);
 }
 
-// копіюю строку
-void my_strcpy_g(char* dst, const char* src) {
-    int i = 0;
-    while (src && src[i] != '\0') {
-        dst[i] = src[i];
-        i++;
-    }
-    dst[i] = '\0';
+// Конструктор з іменем групи
+Group::Group(const std::string& name)
+    : gname(name), studs()
+{
+    studs.reserve(4); // трохи зарезервували, щоб зменшити перевиділення
 }
 
-// створюю пусту групу
-Group::Group() {
-    nazva = nullptr;
-    massiv = nullptr;
-    kilkist = 0;
+// Встановлюю імя групи
+void Group::setName(const std::string& name)
+{
+    gname = name;
 }
 
-// створюю групу з назвою
-Group::Group(const char* zmina) {
-    if (zmina != nullptr) {
-        int len = my_strlen_g(zmina);
-        nazva = new char[len + 1];
-        my_strcpy_g(nazva, zmina);
-    }
-    else nazva = nullptr;
-    massiv = nullptr;
-    kilkist = 0;
+// Повертаю імя групи
+std::string Group::getName() const
+{
+    return gname;
 }
 
-// копіюю групу
-Group::Group(const Group& zmina) {
-    if (zmina.nazva != nullptr) {
-        int len = my_strlen_g(zmina.nazva);
-        nazva = new char[len + 1];
-        my_strcpy_g(nazva, zmina.nazva);
-    }
-    else nazva = nullptr;
-    kilkist = zmina.kilkist;
-    if (kilkist > 0) {
-        massiv = new Student[kilkist];
-        for (int i = 0; i < kilkist; i++) {
-            massiv[i] = zmina.massiv[i];
-        }
-    }
-    else {
-        massiv = nullptr;
-    }
+// Додаю студента в кінець вектора
+void Group::addStudent(const Student& s)
+{
+    studs.push_back(s); // push_back як у вчителя
+    // трохи дебагу для учня, показую розмір і capacity
+    std::cout << "Додав студента. size " << studs.size() << " cap " << studs.capacity() << std::endl;
 }
 
-// видаляю всю пам'ять
-Group::~Group() {
-    if (nazva != nullptr) delete[] nazva;
-    if (massiv != nullptr) delete[] massiv;
+// Видаляю першого студента з таким ім'ям
+bool Group::removeStudentByName(const std::string& name)
+{
+    // знаходимо студента за іменем
+    auto it = std::find_if(studs.begin(), studs.end(),
+        [&](const Student& st) { return st.getName() == name; });
+    if (it != studs.end()) {
+        studs.erase(it); // erase як у вчителя (erase на позицію)
+        std::cout << "Видалив студента " << name << std::endl;
+        return true;
+    }
+    // не знайшли
+    std::cout << "Не знайшов студента " << name << std::endl;
+    return false;
 }
 
-// змінити назву групи
-void Group::SetNazva(const char* zmina) {
-    if (nazva != nullptr) delete[] nazva;
-    if (zmina != nullptr) {
-        int len = my_strlen_g(zmina);
-        nazva = new char[len + 1];
-        my_strcpy_g(nazva, zmina);
-    }
-    else nazva = nullptr;
-}
-
-// повертаю назву
-char* Group::GetNazva() const {
-    return nazva;
-}
-
-// додаю студента
-void Group::DodatyStudent(const char* imya) {
-    Student* noviyMassiv = new Student[kilkist + 1];
-    for (int i = 0; i < kilkist; i++) {
-        noviyMassiv[i] = massiv[i];
-    }
-    noviyMassiv[kilkist].SetImya(imya);
-    if (massiv != nullptr) delete[] massiv;
-    massiv = noviyMassiv;
-    kilkist++;
-}
-
-// видаляю студента по номеру
-void Group::VudalutyStudenta(int nomer) {
-    if (nomer < 0 || nomer >= kilkist) {
-        std::cout << "такого студента нема\n";
-        return;
-    }
-    if (kilkist == 1) {
-        delete[] massiv;
-        massiv = nullptr;
-        kilkist = 0;
-        return;
-    }
-    Student* noviyMassiv = new Student[kilkist - 1];
-    for (int i = 0, j = 0; i < kilkist; i++) {
-        if (i == nomer) continue;
-        noviyMassiv[j++] = massiv[i];
-    }
-    delete[] massiv;
-    massiv = noviyMassiv;
-    kilkist--;
-}
-
-// показую всіх студентів
-void Group::VivestyStudentiv() const {
-    if (kilkist == 0) {
-        std::cout << "В групі нема студентів\n";
-        return;
-    }
-    std::cout << "Студенти групи " << (nazva ? nazva : "Без назви") << ":\n";
-    for (int i = 0; i < kilkist; i++) {
-        std::cout << i + 1 << ". " << massiv[i].GetImya() << "\n";
+// Виводжу всю інфу по групі
+void Group::printAll() const
+{
+    std::cout << "Група: " << gname << " | Кількість студентів: " << studs.size() << std::endl;
+    for (const auto& s : studs) { // range-for виводить кожного студента
+        s.print();
     }
 }
 
-// скільки студентів
-int Group::GetKilkist() const {
-    return kilkist;
+// Повертає кількість студентів
+std::size_t Group::size() const
+{
+    return studs.size();
 }
