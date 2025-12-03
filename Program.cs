@@ -1,116 +1,60 @@
-﻿namespace ConsoleApp1
+﻿class Program
 {
-    internal class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
+        // 2
+        Console.WriteLine(" Reading List Demo ");
+        ReadingList myList = new ReadingList();
+
+        Book book1 = new Book("The Hobbit", "J. R. R. Tolkien");
+        Book book2 = new Book("Clean Code", "Robert C. Martin");
+        Book book3 = new Book("The Hobbit", "J. R. R. Tolkien"); // same as book1
+
+        // add books using Add and operator +
+        myList.Add(book1);
+        myList = myList + book2; // using operator
+        myList += book3; // trying to add duplicate
+
+        Console.WriteLine($"Count: {myList.Count}");
+        Console.WriteLine($"Has 'The Hobbit' ? {myList["The Hobbit"]}"); // string indexer -> bool
+
+        // access by indexer int
+        for (int i = 0; i < myList.Count; i++)
         {
-            Console.WriteLine("Виберіть завдання:");
-            Console.WriteLine("1 Переведення температури");
-            Console.WriteLine("2 Парні числа в діапазоні");
-            Console.WriteLine("3 Число Армстроннга");
-            string вибранеЗавдання = Console.ReadLine();
-
-            if (вибранеЗавдання == "1")
-            {
-                Console.WriteLine("Ведіть температуру:");
-                string введенаТемпература = Console.ReadLine();
-                double температура = Convert.ToDouble(введенаТемпература);
-
-                Console.WriteLine("Виберіть напрямок:");
-                Console.WriteLine("1 Фаренгейт в Цельсій");
-                Console.WriteLine("2 Цельсій в Фаренгейт");
-                string вибірНапрямку = Console.ReadLine();
-
-                if (вибірНапрямку == "1")
-                {
-                    // З Фаренгейта в Цельсій
-                    double цельсий = (температура - 32) * 5 / 9;
-                    Console.WriteLine("Температура в Цельсіях дорівнює: " + цельсий);
-                }
-                else if (вибірНапрямку == "2")
-                {
-                    // З Цельсія в Фаренгейт
-                    double фаренгейт = температура * 9 / 5 + 32;
-                    Console.WriteLine("Температура у Фаренгейтах дорівнює: " + фаренгейт);
-                }
-                else
-                {
-                    Console.WriteLine("Невірний вибір");
-                }
-            }
-            else if (вибранеЗавдання == "2")
-            {
-                Console.WriteLine("Введіть перше число діапазону:");
-                string першеЧислоВвід = Console.ReadLine();
-                int першеЧисло = Convert.ToInt32(першеЧислоВвід);
-
-                Console.WriteLine("Введіть друге число діапазону:");
-                string другеЧислоВвід = Console.ReadLine();
-                int другеЧисло = Convert.ToInt32(другеЧислоВвід);
-
-                int початокДіапазону = першеЧисло;
-                int кінецьДіапазону = другеЧисло;
-                if (першеЧисло > другеЧисло)
-                {
-                    початокДіапазону = другеЧисло;
-                    кінецьДіапазону = першеЧисло;
-                }
-
-                Console.WriteLine("Парні числа в діапазоні:");
-                for (int поточнеЧисло = початокДіапазону; поточнеЧисло <= кінецьДіапазону; поточнеЧисло = поточнеЧисло + 1)
-                {
-                    if (поточнеЧисло % 2 == 0)
-                    {
-                        Console.WriteLine(поточнеЧисло);
-                    }
-                }
-            }
-            else if (вибранеЗавдання == "3")
-            {
-                Console.WriteLine("Введіть число для перевірки, чи є воно числом Армстронга:");
-                string введенеЧисло = Console.ReadLine();
-                int числоДляПеревірки = Convert.ToInt32(введенеЧисло);
-
-                // Копіюємо оригінальне число щоб підрахувати довжину
-                int копіяЧисла = числоДляПеревірки;
-                int кількістьЦифр = 0;
-                while (копіяЧисла != 0)
-                {
-                    копіяЧисла = копіяЧисла / 10;
-                    кількістьЦифр = кількістьЦифр + 1;
-                }
-
-                // Тепер обраховуємо суму степенів цифр
-                копіяЧисла = числоДляПеревірки;
-                int сумаСтепенів = 0;
-                while (копіяЧисла != 0)
-                {
-                    int окремаЦифра = копіяЧисла % 10;
-                    int цифраВСтепені = 1;
-                    for (int i = 0; i < кількістьЦифр; i = i + 1)
-                    {
-                        цифраВСтепені = цифраВСтепені * окремаЦифра;
-                    }
-                    сумаСтепенів = сумаСтепенів + цифраВСтепені;
-                    копіяЧисла = копіяЧисла / 10;
-                }
-
-                if (сумаСтепенів == числоДляПеревірки)
-                {
-                    Console.WriteLine("Це є число Армстронга");
-                }
-                else
-                {
-                    Console.WriteLine("Це не є число Армстронга");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Ви нічого не вибрали або вибрали невірний пункт");
-            }
-
-            Console.WriteLine("Програма завершена.");
-            Console.ReadLine();
+            Console.WriteLine($"Book {i}: {myList[i]}");
         }
+
+        // remove using operator -
+        myList = myList - book1;
+        Console.WriteLine("After remove:");
+        Console.WriteLine($"Count: {myList.Count}");
+
+        Console.WriteLine();
+
+        // 2
+        Console.WriteLine("=== Fraction Demo ===");
+
+        Fraction f1 = new Fraction(1, 2); // 1/2
+        Fraction f2 = new Fraction(3, 4); // 3/4
+
+        Fraction sum = f1 + f2;
+        Fraction diff = f1 - f2;
+        Fraction prod = f1 * f2;
+        Fraction quot = f1 / f2;
+
+        Console.WriteLine($"{f1} + {f2} = {sum}");
+        Console.WriteLine($"{f1} - {f2} = {diff}");
+        Console.WriteLine($"{f1} * {f2} = {prod}");
+        Console.WriteLine($"{f1} / {f2} = {quot}");
+
+        Fraction f3 = new Fraction(2, 4);
+        Console.WriteLine($"{f3} reduced is {f3.ToReducedString()}");
+
+        Console.WriteLine($"Is {f1} == {new Fraction(2, 4)}? {(f1 == new Fraction(2, 4))}");
+        Console.WriteLine($"Is {f3} == {new Fraction(1, 2)}? {(f3 == new Fraction(1, 2))}");
+
+        // small pause
+        Console.WriteLine("Done. Press any key to exit.");
+        Console.ReadKey();
     }
 }
