@@ -1,60 +1,39 @@
-﻿class Program
+﻿using System;
+
+namespace Inheritence
 {
-    static void Main(string[] args)
+    class Program
     {
-        // 2
-        Console.WriteLine(" Reading List Demo ");
-        ReadingList myList = new ReadingList();
-
-        Book book1 = new Book("The Hobbit", "J. R. R. Tolkien");
-        Book book2 = new Book("Clean Code", "Robert C. Martin");
-        Book book3 = new Book("The Hobbit", "J. R. R. Tolkien"); // same as book1
-
-        // add books using Add and operator +
-        myList.Add(book1);
-        myList = myList + book2; // using operator
-        myList += book3; // trying to add duplicate
-
-        Console.WriteLine($"Count: {myList.Count}");
-        Console.WriteLine($"Has 'The Hobbit' ? {myList["The Hobbit"]}"); // string indexer -> bool
-
-        // access by indexer int
-        for (int i = 0; i < myList.Count; i++)
+        static void Main(string[] args)
         {
-            Console.WriteLine($"Book {i}: {myList[i]}");
+            // 1
+            var myViolin = new Violin("OldViolin", "wood, 4 strings", "Italy");
+            var myTrombone = new Trombone("BigSlide", "brass, slide", "Germany");
+            var myUkulele = new Ukulele("TinyUke", "small, 4 strings", "Hawaii");
+            var myCello = new Cello("DeepCello", "large, 4 strings", "Austria");
+
+            MusicalInstrument[] instruments = { myViolin, myTrombone, myUkulele, myCello };
+
+            Console.WriteLine("=== Instruments demo ===");
+            foreach (var ins in instruments)
+            {
+                ins.Show();
+                ins.Sound();
+                ins.Desc();
+                ins.History();
+                Console.WriteLine();
+            }
+
+            // 2
+            var c1 = new Course("BasicMusic", 10);
+            var oc1 = new OnlineCourse("GuitarForBeginners", 20, "YouLearn");
+
+            Console.WriteLine("=== Courses demo ===");
+            Console.WriteLine(c1.ToString());
+            Console.WriteLine(oc1.ToString());
+
+            Console.WriteLine("\nPress any key to exit...");
+            Console.ReadKey();
         }
-
-        // remove using operator -
-        myList = myList - book1;
-        Console.WriteLine("After remove:");
-        Console.WriteLine($"Count: {myList.Count}");
-
-        Console.WriteLine();
-
-        // 2
-        Console.WriteLine("=== Fraction Demo ===");
-
-        Fraction f1 = new Fraction(1, 2); // 1/2
-        Fraction f2 = new Fraction(3, 4); // 3/4
-
-        Fraction sum = f1 + f2;
-        Fraction diff = f1 - f2;
-        Fraction prod = f1 * f2;
-        Fraction quot = f1 / f2;
-
-        Console.WriteLine($"{f1} + {f2} = {sum}");
-        Console.WriteLine($"{f1} - {f2} = {diff}");
-        Console.WriteLine($"{f1} * {f2} = {prod}");
-        Console.WriteLine($"{f1} / {f2} = {quot}");
-
-        Fraction f3 = new Fraction(2, 4);
-        Console.WriteLine($"{f3} reduced is {f3.ToReducedString()}");
-
-        Console.WriteLine($"Is {f1} == {new Fraction(2, 4)}? {(f1 == new Fraction(2, 4))}");
-        Console.WriteLine($"Is {f3} == {new Fraction(1, 2)}? {(f3 == new Fraction(1, 2))}");
-
-        // small pause
-        Console.WriteLine("Done. Press any key to exit.");
-        Console.ReadKey();
     }
 }
