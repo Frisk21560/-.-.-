@@ -1,56 +1,39 @@
 ﻿using System;
 
-public class Book
+namespace Interfaces
 {
-    private string _title;
-    private string _author;
-
-    public Book(string title, string author)
+    public class Book : IDisposable
     {
-        _title = title;
-        _author = author;
-    }
+        public string Title { get; set; } = null!;
+        public string Author { get; set; } = null!;
+        public int Year { get; set; }
+        public int Pages { get; set; }
 
-    public string Title
-    {
-        get { return _title; }
-        set { _title = value ?? ""; }
-    }
-
-    public string Author
-    {
-        get { return _author; }
-        set { _author = value ?? ""; }
-    }
-
-    public override string ToString()
-    {
-        return $"{Title} by {Author}";
-    }
-
-    public override bool Equals(object? obj)
-    {
-        if (obj is Book b)
+        public Book(string title, string author, int year, int pages)
         {
-            return this.Title == b.Title && this.Author == b.Author;
+            Title = title;
+            Author = author;
+            Year = year;
+            Pages = pages;
+            Console.WriteLine($"Book created: {Title}");
         }
-        return false;
-    }
 
-    public override int GetHashCode()
-    {
-        return (Title + "|" + Author).GetHashCode();
-    }
+        public void DisplayInfo()
+        {
+            Console.WriteLine($"Title: {Title} | Author: {Author} | Year: {Year} | Pages: {Pages}");
+        }
 
-    public static bool operator ==(Book a, Book b)
-    {
-        if (ReferenceEquals(a, b)) return true;
-        if (a is null || b is null) return false;
-        return a.Equals(b);
-    }
+        // Finalizer (will be called by GC if Dispose not called)
+        ~Book()
+        {
+            Console.WriteLine($"Book finalizer called for \"{Title}\"");
+        }
 
-    public static bool operator !=(Book a, Book b)
-    {
-        return !(a == b);
+        // Simple Dispose implementation 
+        public void Dispose()
+        {
+            Console.WriteLine($"Book: Dispose called for \"{Title}\"");
+            GC.SuppressFinalize(this); // prevent finalizer after dispose
+        }
     }
 }

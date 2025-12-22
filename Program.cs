@@ -5,35 +5,40 @@ class Program
 {
     static void Main()
     {
-        var tvRem = new TvRemoteControl();
-        tvRem.TurnOn();
-        tvRem.SetChannel(5);
-        tvRem.SetChannel(0); // bad
-        tvRem.TurnOff();
+        Console.WriteLine($"Max generation: {GC.MaxGeneration}");
+        Console.WriteLine($"Memory before GC: {GC.GetTotalMemory(false)}");
 
-        Console.WriteLine();
+        Console.WriteLine("\n--- Test finalizer (no Dispose) ---");
+        // create book and do not call Dispose = finalizer should run on GC
+        var bk1 = new Book("NoDisposeBook", "Some Author", 1999, 123);
+        bk1.DisplayInfo();
+        bk1 = null; // remove reference
+        Console.WriteLine("bk1 set to null, calling GC.Collect()");
+        GC.Collect();
+        GC.WaitForPendingFinalizers(); // wait finalizers
+        Console.WriteLine($"Memory after collect: {GC.GetTotalMemory(false)}");
 
-        var radRem = new RadioRemoteControl();
-        radRem.TurnOn();
-        radRem.SetChannel(95);
-        radRem.SetChannel(200); // out of range but allowed
-        radRem.TurnOff();
+        Console.WriteLine("\n--- Test Dispose with using (book) ---");
+        using (var bk2 = new Book("UsingBook", "Author2", 2005, 200))
+        {
+            bk2.DisplayInfo();
+        } // here Dispose is called for bk2
 
-        Console.WriteLine("\n--- Validators demo ---\n");
+        Console.WriteLine("\n--- Library test (using) ---");
+        using (var lib = new Library())
+        {
+            lib.AddBook(new Book("B1", "Auth1", 2010, 150));
+            lib.AddBook(new Book("B2", "Auth2", 2015, 250));
+            lib.ShowAllBooks();
 
-        var ev = new EmailValidator("student@example.com");
-        bool eok = ev.Validate();
-        Console.WriteLine($"Email valid? {eok}");
+            Console.WriteLine("Leaving using block for library (Dispose will be called)");
+        } // library.Dispose() called = disposes inner books
 
-        var ev2 = new EmailValidator("bademail@com");
-        Console.WriteLine($"Email valid? {ev2.Validate()}");
+        Console.WriteLine("\nForce another GC to show any remaining finalizers:");
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
 
-        Console.WriteLine();
-
-        var pv = new PasswordValidator("abc123");
-        Console.WriteLine($"Password valid? {pv.Validate()}");
-
-        var pv2 = new PasswordValidator("short");
-        Console.WriteLine($"Password valid? {pv2.Validate()}");
+        Console.WriteLine("\nEnd of program. Bye!");
+        Console.WriteLine($"Memory at end: {GC.GetTotalMemory(false)}");
     }
 }
