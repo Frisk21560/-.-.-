@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цикли</title>
+</head>
+<body>
+    <h1>Цикли</h1>
+    
+    <script>
+        // Завдання 1: Сума всіх чисел у заданому діапазоні
+        var pochatok = prompt('Введіть початок діапазону:');
+        var kinets = prompt('Введіть кінець діапазону:');
+        var suma = 0;
+        var i = pochatok;
+        while (i <= kinets) {
+            suma = suma + i;
+            i = i + 1;
+        }
+        console.log('Сума всіх чисел: ' + suma);
+
+        // Завдання 2: Найбільший спільний дільник
+        var chyslo1 = prompt('Введіть перше число:');
+        var chyslo2 = prompt('Введіть друге число:');
+        var a = chyslo1;
+        var b = chyslo2;
+        while (b !== 0) {
+            var temp = b;
+            b = a % b;
+            a = temp;
+        }
+        console.log('Найбільший спільний дільник: ' + a);
+
+        // Завдання 3: Дільники числа
+        var chyslo = prompt('Введіть число:');
+        var dilnyky = '';
+        var j = 1;
+        while (j <= chyslo) {
+            if (chyslo % j === 0) {
+                dilnyky = dilnyky + j + ', ';
+            }
+            j = j + 1;
+        }
+        console.log('Дільники числа: ' + dilnyky);
+
+        // Завдання 4: Кількість цифр у числі
+        var chyslo_dlya_tsyfr = prompt('Введіть число:');
+        var kilkist_tsyfr = 0;
+        var chyslo_kopia = chyslo_dlya_tsyfr;
+        while (chyslo_kopia > 0) {
+            kilkist_tsyfr = kilkist_tsyfr + 1;
+            chyslo_kopia = chyslo_kopia / 10;
+        }
+        console.log('Кількість цифр: ' + kilkist_tsyfr);
+
+        // Завдання 5: Статистика 10 чисел
+        var dodatni = 0;
+        var vid_yemni = 0;
+        var nuli = 0;
+        var parni = 0;
+        var neparni = 0;
+        var k = 0;
+        while (k < 10) {
+            var chyslo_stat = prompt('Введіть число ' + (k + 1) + ':');
+            if (chyslo_stat > 0) {
+                dodatni = dodatni + 1;
+            } else if (chyslo_stat < 0) {
+                vid_yemni = vid_yemni + 1;
+            } else {
+                nuli = nuli + 1;
+            }
+            if (chyslo_stat % 2 === 0) {
+                parni = parni + 1;
+            } else {
+                neparni = neparni + 1;
+            }
+            k = k + 1;
+        }
+        console.log('Додатні: ' + dodatni + '\nВід\'ємні: ' + vid_yemni + '\nНулі: ' + nuli + '\nПарні: ' + parni + '\nНепарні: ' + neparni);
+
+        // Завдання 6: Циклічний калькулятор
+        var prodovzhy = true;
+        while (prodovzhy) {
+            var chyslo_a = prompt('Введіть перше число:');
+            var znak = prompt('Введіть знак (+, -, *, /):');
+            var chyslo_b = prompt('Введіть друге число:');
+            var rezultat = 0;
+            if (znak === '+') {
+                rezultat = chyslo_a + chyslo_b;
+            } else if (znak === '-') {
+                rezultat = chyslo_a - chyslo_b;
+            } else if (znak === '*') {
+                rezultat = chyslo_a * chyslo_b;
+            } else if (znak === '/') {
+                rezultat = chyslo_a / chyslo_b;
+            }
+            console.log('Результат: ' + rezultat);
+            var prodovzhyty = prompt('Ви хочете розв\'язати ще один приклад? (так/ні):');
+            if (prodovzhyty !== 'так') {
+                prodovzhy = false;
+            }
+        }
+
+        // Завдання 7: Змішення цифр
+        var chyslo_zmishen = prompt('Введіть число:');
+        var kil_zmishen = prompt('На скільки цифр змістити:');
+        var rezultat_zmishen = '';
+        var m = 0;
+        while (m < kil_zmishen) {
+            var ostannya = chyslo_zmishen % 10;
+            rezultat_zmishen = ostannya + rezultat_zmishen;
+            chyslo_zmishen = chyslo_zmishen / 10;
+            m = m + 1;
+        }
+        var reshta = chyslo_zmishen;
+        console.log('Змішене число: ' + rezultat_zmishen + reshta);
+
+        // Завдання 8: Дні тижня
+        var dni = ['Понеділок', 'Вівторок', 'Середа', 'Четвер', 'П\'ятниця', 'Субота', 'Неділя'];
+        var indeks_dnya = 0;
+        var tykaly = true;
+        while (tykaly) {
+            console.log(dni[indeks_dnya] + '. Бажаєте побачити назву наступного дня тижня?');
+            indeks_dnya = indeks_dnya + 1;
+            if (indeks_dnya > 6) {
+                indeks_dnya = 0;
+            }
+            var vidpovid = prompt('Бажаєте побачити наступний день? (так/ні):');
+            if (vidpovid !== 'так') {
+                tykaly = false;
+            }
+        }
+
+        // Завдання 9: Таблиця множення
+        var rezultat_tabl = '';
+        var n = 2;
+        while (n <= 9) {
+            var p = 1;
+            while (p <= 10) {
+                rezultat_tabl = rezultat_tabl + n + ' * ' + p + ' = ' + (n * p) + '\n';
+                p = p + 1;
+            }
+            n = n + 1;
+        }
+        console.log(rezultat_tabl);
+
+        // Завдання 10: Гра Вгадай число
+        var min = 0;
+        var max = 100;
+        var zgadalyy = false;
+        while (!zgadalyy) {
+            var N = (min + max) / 2;
+            var vidpovid_gry = prompt('Ваше число > ' + N + ', < ' + N + ' або == ' + N + '?');
+            if (vidpovid_gry === '>') {
+                min = N + 1;
+            } else if (vidpovid_gry === '<') {
+                max = N - 1;
+            } else if (vidpovid_gry === '==') {
+                console.log('Відгадав! Ваше число: ' + N);
+                zgadalyy = true;
+            }
+        }
+    </script>
+</body>
+</html>
