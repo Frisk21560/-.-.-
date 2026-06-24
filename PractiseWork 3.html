@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Об'єкти та функції</title>
+</head>
+<body>
+    <h1>Прямокутник</h1>
+    
+    <script>
+        // Створення об'єкту прямокутника
+        var pryamokutnik = {
+            livaVerkhnya_x: 10,
+            livaVerkhnya_y: 20,
+            pravaPoddnya_x: 50,
+            pravaPoddnya_y: 80
+        };
+
+        // Функція виведення інформації про прямокутник
+        function vyvezyty_infoPoProyamokutnyk(pryam) {
+            console.log('Ліва верхня точка: (' + pryam.livaVerkhnya_x + ', ' + pryam.livaVerkhnya_y + ')');
+            console.log('Права нижня точка: (' + pryam.pravaPoddnya_x + ', ' + pryam.pravaPoddnya_y + ')');
+        }
+
+        // Функція обчислення ширини
+        function otrymaty_shyryny(pryam) {
+            var shyryna = pryam.pravaPoddnya_x - pryam.livaVerkhnya_x;
+            return shyryna;
+        }
+
+        // Функція обчислення висоти
+        function otrymaty_vysoty(pryam) {
+            var vysota = pryam.pravaPoddnya_y - pryam.livaVerkhnya_y;
+            return vysota;
+        }
+
+        // Функція обчислення площі
+        function otrymaty_ploshshu(pryam) {
+            var shyryna = otrymaty_shyryny(pryam);
+            var vysota = otrymaty_vysoty(pryam);
+            var ploshcha = shyryna * vysota;
+            return ploshcha;
+        }
+
+        // Функція обчислення периметра
+        function otrymaty_perimetr(pryam) {
+            var shyryna = otrymaty_shyryny(pryam);
+            var vysota = otrymaty_vysoty(pryam);
+            var perimetr = (shyryna + vysota) * 2;
+            return perimetr;
+        }
+
+        // Функція зміни ширини
+        function zminyty_shyryny(pryam, zmina) {
+            pryam.pravaPoddnya_x = pryam.pravaPoddnya_x + zmina;
+        }
+
+        // Функція зміни висоти
+        function zminyty_vysoty(pryam, zmina) {
+            pryam.pravaPoddnya_y = pryam.pravaPoddnya_y + zmina;
+        }
+
+        // Функція зміни ширини та висоти
+        function zminyty_shyryny_vysoty(pryam, zmina_shyryny, zmina_vysoty) {
+            zminyty_shyryny(pryam, zmina_shyryny);
+            zminyty_vysoty(pryam, zmina_vysoty);
+        }
+
+        // Функція зміщення по осі X
+        function zmistytys_po_X(pryam, zmishen) {
+            pryam.livaVerkhnya_x = pryam.livaVerkhnya_x + zmishen;
+            pryam.pravaPoddnya_x = pryam.pravaPoddnya_x + zmishen;
+        }
+
+        // Функція зміщення по осі Y
+        function zmistytys_po_Y(pryam, zmishen) {
+            pryam.livaVerkhnya_y = pryam.livaVerkhnya_y + zmishen;
+            pryam.pravaPoddnya_y = pryam.pravaPoddnya_y + zmishen;
+        }
+
+        // Функція зміщення по осях X та Y
+        function zmistytys_po_XY(pryam, zmishen_X, zmishen_Y) {
+            zmistytys_po_X(pryam, zmishen_X);
+            zmistytys_po_Y(pryam, zmishen_Y);
+        }
+
+        // Функція перевірки точки всередині прямокутника
+        function tochka_vseredyni(pryam, tochka_x, tochka_y) {
+            var vseredyni = false;
+            if (tochka_x >= pryam.livaVerkhnya_x && tochka_x <= pryam.pravaPoddnya_x && tochka_y >= pryam.livaVerkhnya_y && tochka_y <= pryam.pravaPoddnya_y) {
+                vseredyni = true;
+            }
+            return vseredyni;
+        }
+
+        // Тестування функцій
+        console.log('\nПочаткові дані про прямокутник');
+        vyvezyty_infoPoProyamokutnyk(pryamokutnik);
+        console.log('Ширина: ' + otrymaty_shyryny(pryamokutnik));
+        console.log('Висота: ' + otrymaty_vysoty(pryamokutnik));
+        console.log('Площа: ' + otrymaty_ploshshu(pryamokutnik));
+        console.log('Периметр: ' + otrymaty_perimetr(pryamokutnik));
+
+        console.log('\nЗміна ширини на плюс 10');
+        zminyty_shyryny(pryamokutnik, 10);
+        vyvezyty_infoPoProyamokutnyk(pryamokutnik);
+        console.log('Нова ширина: ' + otrymaty_shyryny(pryamokutnik));
+
+        console.log('\nЗміна висоти на плюс 15');
+        zminyty_vysoty(pryamokutnik, 15);
+        vyvezyty_infoPoProyamokutnyk(pryamokutnik);
+        console.log('Нова висота: ' + otrymaty_vysoty(pryamokutnik));
+
+        console.log('\nЗміна ширини на мінус 5 та висоти на мінус 10');
+        zminyty_shyryny_vysoty(pryamokutnik, -5, -10);
+        vyvezyty_infoPoProyamokutnyk(pryamokutnik);
+
+        console.log('\nЗміщення по осі X на плюс 20');
+        zmistytys_po_X(pryamokutnik, 20);
+        vyvezyty_infoPoProyamokutnyk(pryamokutnik);
+
+        console.log('\nЗміщення по осі Y на плюс 30');
+        zmistytys_po_Y(pryamokutnik, 30);
+        vyvezyty_infoPoProyamokutnyk(pryamokutnik);
+
+        console.log('\nЗміщення по осях X на мінус 10 та Y на мінус 20');
+        zmistytys_po_XY(pryamokutnik, -10, -20);
+        vyvezyty_infoPoProyamokutnyk(pryamokutnik);
+
+        console.log('\nПеревірка точок');
+        console.log('Точка 40 50 всередині: ' + tochka_vseredyni(pryamokutnik, 40, 50));
+        console.log('Точка 100 100 всередині: ' + tochka_vseredyni(pryamokutnik, 100, 100));
+        console.log('Точка 45 60 всередині: ' + tochka_vseredyni(pryamokutnik, 45, 60));
+    </script>
+</body>
+</html>
