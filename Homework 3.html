@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Об'єкти та функції</title>
+</head>
+<body>
+    <h1>Автомобіль, Дроб, Час</h1>
+    
+    <script>
+        // АВТОМОБІЛЬ
+
+        var avtomobil = {
+            vyrobnyk: 'Toyota',
+            model: 'Camry',
+            rik_vypusku: 2020,
+            serednya_shvydkist: 100
+        };
+
+        function vyvezyty_info_avtomobil(avto) {
+            console.log('Виробник: ' + avto.vyrobnyk);
+            console.log('Модель: ' + avto.model);
+            console.log('Рік випуску: ' + avto.rik_vypusku);
+            console.log('Середня швидкість: ' + avto.serednya_shvydkist + ' км/год');
+        }
+
+        function obchyslyty_chas_dorogy(avto, vidstan) {
+            var chas_bez_preryv = vidstan / avto.serednya_shvydkist;
+            var kilkist_preryv = 0;
+            var i = 0;
+            while (i < chas_bez_preryv) {
+                if (i > 0 && i % 4 === 0) {
+                    kilkist_preryv = kilkist_preryv + 1;
+                }
+                i = i + 1;
+            }
+            var zagalnyy_chas = chas_bez_preryv + kilkist_preryv;
+            return zagalnyy_chas;
+        }
+
+        console.log('\nАвтомобіль');
+        vyvezyty_info_avtomobil(avtomobil);
+        console.log('Час для подолання 500 км: ' + obchyslyty_chas_dorogy(avtomobil, 500) + ' годин');
+
+        // ДІЇ З ДРОБАМИ
+
+        var drob1 = {
+            chyselnyk: 3,
+            znamennyk: 4
+        };
+
+        var drob2 = {
+            chyselnyk: 2,
+            znamennyk: 5
+        };
+
+        function vyvezyty_drob(drob) {
+            console.log(drob.chyselnyk + '/' + drob.znamennyk);
+        }
+
+        function dodavaty_droby(drob_a, drob_b) {
+            var novyy_drob = {
+                chyselnyk: drob_a.chyselnyk * drob_b.znamennyk + drob_b.chyselnyk * drob_a.znamennyk,
+                znamennyk: drob_a.znamennyk * drob_b.znamennyk
+            };
+            return novyy_drob;
+        }
+
+        function vidnymaty_droby(drob_a, drob_b) {
+            var novyy_drob = {
+                chyselnyk: drob_a.chyselnyk * drob_b.znamennyk - drob_b.chyselnyk * drob_a.znamennyk,
+                znamennyk: drob_a.znamennyk * drob_b.znamennyk
+            };
+            return novyy_drob;
+        }
+
+        function mnozhyty_droby(drob_a, drob_b) {
+            var novyy_drob = {
+                chyselnyk: drob_a.chyselnyk * drob_b.chyselnyk,
+                znamennyk: drob_a.znamennyk * drob_b.znamennyk
+            };
+            return novyy_drob;
+        }
+
+        function dility_droby(drob_a, drob_b) {
+            var novyy_drob = {
+                chyselnyk: drob_a.chyselnyk * drob_b.znamennyk,
+                znamennyk: drob_a.znamennyk * drob_b.chyselnyk
+            };
+            return novyy_drob;
+        }
+
+        function skorochenyy_drob(drob) {
+            var nsd = drob.chyselnyk;
+            var denominuvannya = drob.znamennyk;
+            var i = 0;
+            while (i <= nsd) {
+                if (nsd % denominuvannya === 0 && denominuvannya % denominuvannya === 0) {
+                    break;
+                }
+                i = i + 1;
+            }
+            var skorochenyy = {
+                chyselnyk: drob.chyselnyk / denominuvannya,
+                znamennyk: drob.znamennyk / denominuvannya
+            };
+            return skorochenyy;
+        }
+
+        console.log('\nДії з дробами');
+        console.log('Перший дріб: ');
+        vyvezyty_drob(drob1);
+        console.log('Другий дріб: ');
+        vyvezyty_drob(drob2);
+
+        console.log('Додавання: ');
+        vyvezyty_drob(dodavaty_droby(drob1, drob2));
+        console.log('Віднімання: ');
+        vyvezyty_drob(vidnymaty_droby(drob1, drob2));
+        console.log('Множення: ');
+        vyvezyty_drob(mnozhyty_droby(drob1, drob2));
+        console.log('Ділення: ');
+        vyvezyty_drob(dility_droby(drob1, drob2));
+
+        // ЧАС
+
+        var chas = {
+            godyny: 20,
+            khvylynu: 30,
+            sekundy: 45
+        };
+
+        function vyvezyty_chas(ch) {
+            console.log(ch.godyny + ':' + ch.khvylynu + ':' + ch.sekundy);
+        }
+
+        function zminyty_chas_na_sekundy(ch, sekundy_zmina) {
+            ch.sekundy = ch.sekundy + sekundy_zmina;
+            if (ch.sekundy >= 60) {
+                ch.khvylynu = ch.khvylynu + 1;
+                ch.sekundy = ch.sekundy - 60;
+            }
+            if (ch.khvylynu >= 60) {
+                ch.godyny = ch.godyny + 1;
+                ch.khvylynu = ch.khvylynu - 60;
+            }
+            if (ch.godyny >= 24) {
+                ch.godyny = ch.godyny - 24;
+            }
+        }
+
+        function zminyty_chas_na_khvylynu(ch, khvylynu_zmina) {
+            ch.khvylynu = ch.khvylynu + khvylynu_zmina;
+            if (ch.khvylynu >= 60) {
+                ch.godyny = ch.godyny + 1;
+                ch.khvylynu = ch.khvylynu - 60;
+            }
+            if (ch.godyny >= 24) {
+                ch.godyny = ch.godyny - 24;
+            }
+        }
+
+        function zminyty_chas_na_godyny(ch, godyny_zmina) {
+            ch.godyny = ch.godyny + godyny_zmina;
+            if (ch.godyny >= 24) {
+                ch.godyny = ch.godyny - 24;
+            }
+        }
+
+        console.log('\nЧас');
+        console.log('Початковий час: ');
+        vyvezyty_chas(chas);
+
+        console.log('Додано 30 секунд: ');
+        zminyty_chas_na_sekundy(chas, 30);
+        vyvezyty_chas(chas);
+
+        console.log('Додано 45 хвилин: ');
+        zminyty_chas_na_khvylynu(chas, 45);
+        vyvezyty_chas(chas);
+
+        console.log('Додано 5 годин: ');
+        zminyty_chas_na_godyny(chas, 5);
+        vyvezyty_chas(chas);
+    </script>
+</body>
+</html>
