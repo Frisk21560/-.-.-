@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object Model/title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+        }
+        
+        .tabs {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            background: #667eea;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px;
+            border: none;
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab-btn:hover {
+            background: #764ba2;
+        }
+        
+        .tab-btn.active {
+            background: #764ba2;
+            border-bottom-color: #FFD700;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 40px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Завдання 1 */
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .number-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #333;
+            margin: 20px 0;
+            min-width: 100px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        button {
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        button:active {
+            transform: scale(0.95);
+        }
+
+        /* Завдання 2 */
+        .blocks-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .add-block-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+        }
+        
+        .add-block-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+        
+        .color-block {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .color-block:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .color-block::after {
+            content: '✕';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30px;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .color-block:hover::after {
+            opacity: 1;
+        }
+        
+        .empty-message {
+            text-align: center;
+            color: #999;
+            padding: 40px;
+            font-size: 18px;
+        }
+
+        /* Завдання 3 */
+        .text-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #000;
+            margin-bottom: 30px;
+            text-align: justify;
+            transition: color 0.3s;
+        }
+        
+        .palette-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+        
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .color-cell {
+            aspect-ratio: 1;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .color-cell:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .color-cell.active {
+            border-color: #333;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        }
+        
+        .reset-btn {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .reset-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        /* Завдання 4 */
+        .article {
+            margin-bottom: 40px;
+        }
+        
+        .article h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .article p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #555;
+            text-align: justify;
+            margin-bottom: 15px;
+        }
+        
+        .comments-section {
+            border-top: 2px solid #eee;
+            padding-top: 30px;
+        }
+        
+        .comments-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .comments-list {
+            margin-bottom: 30px;
+        }
+        
+        .comment {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .comment-author {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .comment-date {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+        
+        .comment-text {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .add-comment-form {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+        
+        .submit-btn {
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+        
+        .no-comments {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        /* Завдання 5 */
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .input-wrapper label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .input-wrapper input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+        
+        .suggestions-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 10;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: -2px;
+        }
+        
+        .suggestions-list.active {
+            display: block;
+        }
+        
+        .suggestion-item {
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-bottom: 1px solid #f0f0f0;
+            list-style: none;
+        }
+        
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+        
+        .suggestion-item:hover {
+            background: #f0f0f0;
+            padding-left: 20px;
+        }
+        
+        .info {
+            margin-top: 30px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+            color: #666;
+            font-size: 14px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .selected-country {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+            display: none;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .selected-country.active {
+            display: block;
+        }
+        
+        .selected-country p {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .tab-btn {
+                min-width: 120px;
+                padding: 10px;
+                font-size: 12px;
+            }
+            
+            .tab-content {
+                padding: 20px;
+            }
+            
+            .color-palette {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="tabs">
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="openTab(0)">Завдання 1</button>
+            <button class="tab-btn" onclick="openTab(1)">Завдання 2</button>
+            <button class="tab-btn" onclick="openTab(2)">Завдання 3</button>
+            <button class="tab-btn" onclick="openTab(3)">Завдання 4</button>
+            <button class="tab-btn" onclick="openTab(4)">Завдання 5</button>
+        </div>
+
+        <div class="tab-content active">
+            <div class="container">
+                <h1>Счетчик</h1>
+                <div class="number-display" id="numberDisplay">0</div>
+                <div class="button-group">
+                    <button id="decreaseBtn">−</button>
+                    <button id="increaseBtn">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <h1>Кольорові блоки</h1>
+            <button class="add-block-btn" id="addBtn">Додати блок</button>
+            <div class="blocks-container" id="blocksContainer">
+                <div class="empty-message">Нема блоків. Натисніть "Додати блок"</div>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <h1>Змініть колір тексту</h1>
+            <p class="text-content" id="textContent">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore 
+                magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            </p>
+            
+            <div class="palette-title">Палітра кольорів:</div>
+            <div class="color-palette" id="colorPalette"></div>
+            
+            <button class="reset-btn" id="resetBtn">Скинути колір</button>
+        </div>
+
+        <div class="tab-content">
+            <div class="article">
+                <h1>What is Lorem Ipsum?</h1>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore 
+                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
+                    aliquip ex ea commodo consequat.
+                </p>
+                <p>
+                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+            </div>
+            
+            <div class="comments-section">
+                <h2 class="comments-title">Коментарі</h2>
+                
+                <div class="comments-list" id="commentsList">
+                    <div class="comment">
+                        <div class="comment-author">Антон</div>
+                        <div class="comment-date">22.01.2024</div>
+                        <div class="comment-text">Найкращий коментар від Антона!</div>
+                    </div>
+                </div>
+                
+                <div class="add-comment-form">
+                    <h3 style="margin-bottom: 15px; color: #333;">Залиште коментар</h3>
+                    <form id="commentForm">
+                        <div class="form-group">
+                            <label for="name">Ім'я:</label>
+                            <input type="text" id="name" name="name" required placeholder="Введіть ваше ім'я">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="comment">Коментар:</label>
+                            <textarea id="comment" name="comment" required placeholder="Введіть ваш коментар"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Додати коментар</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <h1>Пошук країни</h1>
+            
+            <div class="input-wrapper">
+                <label for="countryInput">Введіть назву країни:</label>
+                <input 
+                    type="text" 
+                    id="countryInput" 
+                    placeholder="Наприклад: Франція, Україна..." 
+                    autocomplete="off"
+                >
+                <ul class="suggestions-list" id="suggestionsList"></ul>
+            </div>
+            
+            <div class="info">
+                💡 <strong>Підказка:</strong> Почніть вводити назву країни, щоб побачити список варіантів. 
+                Натисніть на будь-яку підказку, щоб обрати країну.
+            </div>
+            
+            <div class="selected-country" id="selectedCountry">
+                <p>✓ Обрана країна: <span id="selectedText"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openTab(n) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const buttons = document.querySelectorAll('.tab-btn');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            tabs[n].classList.add('active');
+            buttons[n].classList.add('active');
+        }
+
+        // Завдання 1
+        let number = 0;
+        const display = document.getElementById('numberDisplay');
+        const increaseBtn = document.getElementById('increaseBtn');
+        const decreaseBtn = document.getElementById('decreaseBtn');
+
+        increaseBtn.addEventListener('click', () => {
+            number++;
+            updateDisplay();
+        });
+
+        decreaseBtn.addEventListener('click', () => {
+            number--;
+            updateDisplay();
+        });
+
+        function updateDisplay() {
+            display.textContent = number;
+        }
+
+        // Завдання 2
+        const addBtn = document.getElementById('addBtn');
+        const blocksContainer = document.getElementById('blocksContainer');
+        
+        const colors = [
+            '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8',
+            '#F7DC6F', '#BB8FCE', '#85C1E2', '#F8B88B', '#52C4B1',
+            '#FF8C94', '#A8D8EA', '#FFD700', '#FF69B4', '#00CED1'
+        ];
+        
+        addBtn.addEventListener('click', addBlock);
+        
+        function addBlock() {
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            const block = document.createElement('div');
+            block.className = 'color-block';
+            block.style.backgroundColor = randomColor;
+            
+            block.addEventListener('click', () => {
+                block.remove();
+                checkIfEmpty();
+            });
+            
+            const emptyMessage = blocksContainer.querySelector('.empty-message');
+            if (emptyMessage) {
+                emptyMessage.remove();
+            }
+            
+            blocksContainer.appendChild(block);
+        }
+        
+        function checkIfEmpty() {
+            if (blocksContainer.children.length === 0) {
+                const emptyMessage = document.createElement('div');
+                emptyMessage.className = 'empty-message';
+                emptyMessage.textContent = 'Нема блоків. Натисніть "Додати блок"';
+                blocksContainer.appendChild(emptyMessage);
+            }
+        }
+
+        // Завдання 3
+        const textContent = document.getElementById('textContent');
+        const colorPalette = document.getElementById('colorPalette');
+        const resetBtn = document.getElementById('resetBtn');
+        
+        const paletteColors = [
+            { name: 'Чорний', hex: '#000000' },
+            { name: 'Червоний', hex: '#FF0000' },
+            { name: 'Жовтий', hex: '#FFD700' },
+            { name: 'Зелений', hex: '#008000' },
+            { name: 'Синій', hex: '#0000FF' },
+            { name: 'Фіолетовий', hex: '#800080' },
+            { name: 'Оранжевий', hex: '#FFA500' },
+            { name: 'Рожевий', hex: '#FFC0CB' },
+            { name: 'Коричневий', hex: '#8B4513' },
+            { name: 'Сірий', hex: '#808080' },
+            { name: 'Бірюзовий', hex: '#20B2AA' },
+            { name: 'Малиновий', hex: '#C71585' },
+            { name: 'Індиго', hex: '#4B0082' },
+            { name: 'Лаймовий', hex: '#32CD32' },
+            { name: 'Морський', hex: '#2E8B57' },
+            { name: 'Томатний', hex: '#FF6347' }
+        ];
+        
+        let activeCell = null;
+        
+        paletteColors.forEach(color => {
+            const cell = document.createElement('div');
+            cell.className = 'color-cell';
+            cell.style.backgroundColor = color.hex;
+            cell.setAttribute('data-color', color.hex);
+            cell.title = color.name;
+            
+            cell.addEventListener('click', () => {
+                textContent.style.color = color.hex;
+                
+                if (activeCell) {
+                    activeCell.classList.remove('active');
+                }
+                cell.classList.add('active');
+                activeCell = cell;
+            });
+            
+            colorPalette.appendChild(cell);
+        });
+        
+        resetBtn.addEventListener('click', () => {
+            textContent.style.color = '#000000';
+            if (activeCell) {
+                activeCell.classList.remove('active');
+                activeCell = null;
+            }
+        });
+
+        // Завдання 4
+        const commentForm = document.getElementById('commentForm');
+        const commentsList = document.getElementById('commentsList');
+        const nameInput = document.getElementById('name');
+        const commentInput = document.getElementById('comment');
+        
+        commentForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = nameInput.value.trim();
+            const text = commentInput.value.trim();
+            
+            if (name && text) {
+                const date = new Date();
+                const formattedDate = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
+                
+                const commentDiv = document.createElement('div');
+                commentDiv.className = 'comment';
+                commentDiv.innerHTML = `
+                    <div class="comment-author">${escapeHtml(name)}</div>
+                    <div class="comment-date">${formattedDate}</div>
+                    <div class="comment-text">${escapeHtml(text)}</div>
+                `;
+                
+                commentsList.appendChild(commentDiv);
+                
+                nameInput.value = '';
+                commentInput.value = '';
+            }
+        });
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Завдання 5
+        const countryInput = document.getElementById('countryInput');
+        const suggestionsList = document.getElementById('suggestionsList');
+        const selectedCountry = document.getElementById('selectedCountry');
+        const selectedText = document.getElementById('selectedText');
+        
+        const countries = [
+            'Австралія', 'Австрія', 'Азербайджан', 'Албанія', 'Алжир',
+            'Ангілья', 'Ангола', 'Андорра', 'Антигуа і Барбуда', 'Аргентина',
+            'Аруба', 'Афганістан', 'Багами', 'Бангладеш', 'Барбадос',
+            'Бахрейн', 'Беліз', 'Бельгія', 'Белорусія', 'Берег Слонової Кості',
+            'Бермуди', 'Болгарія', 'Болівія', 'Боснія і Герцеговина', 'Ботсвана',
+            'Бразилія', 'Британські Віргінські острови', 'Бруней', 'Буркіна-Фасо', 'Бурунді',
+            'Бутан', 'В\'єтнам', 'Ватикан', 'Великобританія', 'Вірменія',
+            'Вірджинські острови США', 'Гавайські острови', 'Гаїті', 'Гайана', 'Гібралтар',
+            'Гватемала', 'Гвадалупа', 'Гвам', 'Гвінея', 'Гвінея-Бісау',
+            'Гельветія', 'Геральд', 'Гергія', 'Гренада', 'Гренадія',
+            'Греція', 'Гринланд', 'Данія', 'Джерсі',
+            'Джиббуті', 'Діяго Гарсія', 'Єгипет', 'Екваторіальна Гвінея', 'Еквадор',
+            'Екуадор', 'Франція', 'Франківськ', 'Україна', 'Угорщина',
+            'Польща', 'Румунія', 'Росія', 'Іспанія', 'Італія',
+            'Португалія', 'Фінляндія', 'Швеція', 'Норвегія', 'Ісландія'
+        ];
+        
+        const uniqueCountries = [...new Set(countries)].sort();
+        
+        countryInput.addEventListener('input', () => {
+            const value = countryInput.value.trim().toLowerCase();
+            suggestionsList.innerHTML = '';
+            selectedCountry.classList.remove('active');
+            
+            if (!value) {
+                suggestionsList.classList.remove('active');
+                return;
+            }
+            
+            const filtered = uniqueCountries.filter(country => 
+                country.toLowerCase().startsWith(value)
+            ).slice(0, 10);
+            
+            if (filtered.length === 0) {
+                suggestionsList.classList.remove('active');
+                return;
+            }
+            
+            filtered.forEach(country => {
+                const li = document.createElement('li');
+                li.className = 'suggestion-item';
+                li.textContent = country;
+                li.addEventListener('click', () => selectCountry(country));
+                suggestionsList.appendChild(li);
+            });
+            
+            suggestionsList.classList.add('active');
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.input-wrapper')) {
+                suggestionsList.classList.remove('active');
+            }
+        });
+        
+        function selectCountry(country) {
+            countryInput.value = country;
+            suggestionsList.classList.remove('active');
+            selectedText.textContent = country;
+            selectedCountry.classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object Model</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    // ЗАВДАННЯ 1: Введення імені без цифр
+    <section id="task1" class="task">
+        <h2>Завдання 1: Введення імені (без цифр)</h2>
+        <p>Enter your name (name can't contain digits):</p>
+        <input type="text" id="nameInput" placeholder="Brendan Eich">
+    </section>
+
+    // ЗАВДАННЯ 2: Модальне вікно
+    <section id="task2" class="task">
+        <h2>Завдання 2: Модальне вікно</h2>
+        <button id="openModalBtn" class="btn">Відкрити</button>
+        
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <h3>Hello from Modal Window!</h3>
+                <button id="closeModalBtn" class="btn">Закрити</button>
+            </div>
+        </div>
+    </section>
+
+    // ЗАВДАННЯ 3: Футбольне поле з м'ячем
+    <section id="task3" class="task">
+        <h2>Завдання 3: Футбольне поле</h2>
+        <div id="footballField" class="football-field">
+            <div id="ball" class="ball"></div>
+        </div>
+    </section>
+
+    // ЗАВДАННЯ 4: Світлофор
+    <section id="task4" class="task">
+        <h2>Завдання 4: Світлофор</h2>
+        <div class="traffic-light-container">
+            <div class="traffic-light">
+                <div id="red" class="light red"></div>
+                <div id="yellow" class="light yellow"></div>
+                <div id="green" class="light green"></div>
+            </div>
+            <button id="nextTrafficBtn" class="btn">NEXT</button>
+        </div>
+    </section>
+
+    // ЗАВДАННЯ 5: Список книг
+    <section id="task5" class="task">
+        <h2>Завдання 5: Список книг</h2>
+        <ul id="booksList" class="books-list">
+            <li class="book-item">Гаррі Поттер</li>
+            <li class="book-item">Володар кілець</li>
+            <li class="book-item">Гра престолів</li>
+            <li class="book-item">Хроніки Нарнії</li>
+            <li class="book-item">Сніг, який іде</li>
+        </ul>
+    </section>
+
+    // ЗАВДАННЯ 6: Кнопки з підказками
+    <section id="task6" class="task">
+        <h2>Завдання 6: Кнопки з підказками</h2>
+        <div class="buttons-container">
+            <button class="tooltip-btn" data-tooltip="Це перша кнопка">Кнопка 1</button>
+            <button class="tooltip-btn" data-tooltip="Це друга кнопка">Кнопка 2</button>
+            <button class="tooltip-btn" data-tooltip="Це третя кнопка">Кнопка 3</button>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
