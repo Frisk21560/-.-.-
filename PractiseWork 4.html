@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новини</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .news-item {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #f9f9f9;
+        }
+        .news-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .news-text {
+            margin-bottom: 10px;
+        }
+        .news-tags {
+            margin-bottom: 10px;
+            color: #0066cc;
+        }
+        .news-date {
+            color: #999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Новини</h1>
+    
+    <script>
+        // ЗАВДАННЯ 1
+
+        class PrintMachine {
+            constructor(rozmir_shryfu, kolir_shryfu, simeystvo_shryfu) {
+                this.rozmir_shryfu = rozmir_shryfu;
+                this.kolir_shryfu = kolir_shryfu;
+                this.simeystvo_shryfu = simeystvo_shryfu;
+            }
+
+            print(tekst) {
+                var html = '<div style="font-size: ' + this.rozmir_shryfu + 'px; color: ' + this.kolir_shryfu + '; font-family: ' + this.simeystvo_shryfu + ';">';
+                html = html + tekst;
+                html = html + '</div>';
+                document.write(html);
+            }
+        }
+
+        console.log('\nПринтер');
+        var prynter = new PrintMachine(24, 'blue', 'Arial');
+        prynter.print('Это текст из принтера');
+
+        // ЗАВДАННЯ 2
+
+        class Novyna {
+            constructor(zaholovok, tekst, tegy, data_publikacii) {
+                this.zaholovok = zaholovok;
+                this.tekst = tekst;
+                this.tegy = tegy;
+                this.data_publikacii = data_publikacii;
+            }
+
+            otrymaty_vidformatirovanu_datu() {
+                var teper = new Date();
+                var roznytsya_ms = teper - this.data_publikacii;
+                var roznytsya_dniv = roznytsya_ms / (1000 * 60 * 60 * 24);
+
+                if (roznytsya_dniv < 1) {
+                    return 'сьогодні';
+                } else if (roznytsya_dniv < 7) {
+                    var dniv = Math.floor(roznytsya_dniv);
+                    return dniv + ' днів тому';
+                } else {
+                    var den = this.data_publikacii.getDate();
+                    var misyac = this.data_publikacii.getMonth() + 1;
+                    var rik = this.data_publikacii.getFullYear();
+                    return den + '.' + misyac + '.' + rik;
+                }
+            }
+
+            print() {
+                var html = '<div class="news-item">';
+                html = html + '<div class="news-title">' + this.zaholovok + '</div>';
+                html = html + '<div class="news-text">' + this.tekst + '</div>';
+                html = html + '<div class="news-tags">Теги: ';
+                for (var i = 0; i < this.tegy.length; i = i + 1) {
+                    html = html + '#' + this.tegy[i];
+                    if (i < this.tegy.length - 1) {
+                        html = html + ', ';
+                    }
+                }
+                html = html + '</div>';
+                html = html + '<div class="news-date">' + this.otrymaty_vidformatirovanu_datu() + '</div>';
+                html = html + '</div>';
+                document.write(html);
+            }
+        }
+
+        // ЗАВДАННЯ 3
+
+        class StrichkaNovin {
+            constructor() {
+                this.novyny = [];
+            }
+
+            get otrymaty_kilkist() {
+                return this.novyny.length;
+            }
+
+            vyvezyty_usi_novyny() {
+                for (var i = 0; i < this.novyny.length; i = i + 1) {
+                    this.novyny[i].print();
+                }
+            }
+
+            dodatyNobynu(novyna) {
+                this.novyny.push(novyna);
+            }
+
+            vydalytyNobynu(indeks) {
+                this.novyny.splice(indeks, 1);
+            }
+
+            sortuvaty_po_dati() {
+                var i = 0;
+                while (i < this.novyny.length) {
+                    var j = 0;
+                    while (j < this.novyny.length - 1 - i) {
+                        if (this.novyny[j].data_publikacii < this.novyny[j + 1].data_publikacii) {
+                            var temp = this.novyny[j];
+                            this.novyny[j] = this.novyny[j + 1];
+                            this.novyny[j + 1] = temp;
+                        }
+                        j = j + 1;
+                    }
+                    i = i + 1;
+                }
+            }
+
+            poshuk_po_tegu(teg) {
+                var znajdeni_novyny = [];
+                var i = 0;
+                while (i < this.novyny.length) {
+                    var j = 0;
+                    while (j < this.novyny[i].tegy.length) {
+                        if (this.novyny[i].tegy[j] === teg) {
+                            znajdeni_novyny.push(this.novyny[i]);
+                            break;
+                        }
+                        j = j + 1;
+                    }
+                    i = i + 1;
+                }
+                return znajdeni_novyny;
+            }
+        }
+
+        console.log('\nСтрічка новин');
+        var strichka = new StrichkaNovin();
+
+        var data1 = new Date();
+        data1.setDate(data1.getDate() - 0);
+        var novyna1 = new Novyna('Перша новина', 'Це текст першої новини про важливі подіі', ['технологія', 'новини'], data1);
+
+        var data2 = new Date();
+        data2.setDate(data2.getDate() - 3);
+        var novyna2 = new Novyna('Друга новина', 'Це текст другої новини про спорт', ['спорт', 'новини'], data2);
+
+        var data3 = new Date();
+        data3.setDate(data3.getDate() - 10);
+        var novyna3 = new Novyna('Третя новина', 'Це текст третьої новини про погоду', ['погода', 'технологія'], data3);
+
+        strichka.dodatyNobynu(novyna1);
+        strichka.dodatyNobynu(novyna2);
+        strichka.dodatyNobynu(novyna3);
+
+        console.log('Кількість новин: ' + strichka.otrymaty_kilkist);
+
+        document.write('<h2>Усі новини</h2>');
+        strichka.vyvezyty_usi_novyny();
+
+        document.write('<h2>Новини після сортування</h2>');
+        strichka.sortuvaty_po_dati();
+        strichka.vyvezyty_usi_novyny();
+
+        console.log('\nПошук по тегу технологія');
+        var znaideni = strichka.poshuk_po_tegu('технологія');
+        console.log('Знайдено новин: ' + znaideni.length);
+
+        document.write('<h2>Пошук по тегу технологія</h2>');
+        for (var k = 0; k < znaideni.length; k = k + 1) {
+            znaideni[k].print();
+        }
+    </script>
+</body>
+</html>

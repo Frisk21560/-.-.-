@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Класи</title>
+</head>
+<body>
+    <h1>Класи</h1>
+    
+    <script>
+        // ЗАВДАННЯ 1
+
+        class Kolo {
+            constructor(radius) {
+                this.radius = radius;
+            }
+
+            get dajteRadius() {
+                return this.radius;
+            }
+
+            set vstanovytyRadius(novyy_radius) {
+                this.radius = novyy_radius;
+            }
+
+            get dajteDeametr() {
+                return this.radius * 2;
+            }
+
+            obchyslytyPloshchu() {
+                return 3.14 * this.radius * this.radius;
+            }
+
+            obchyslytyDovzhynu() {
+                return 2 * 3.14 * this.radius;
+            }
+        }
+
+        console.log('\nКоло');
+        var kolo = new Kolo(5);
+        console.log('Радіус: ' + kolo.dajteRadius);
+        console.log('Діаметр: ' + kolo.dajteDeametr);
+        console.log('Площа: ' + kolo.obchyslytyPloshchu());
+        console.log('Довжина: ' + kolo.obchyslytyDovzhynu());
+        kolo.vstanovytyRadius = 10;
+        console.log('Новий радіус: ' + kolo.dajteRadius);
+
+        // ЗАВДАННЯ 2
+
+        class HtmlElement {
+            constructor(nazva_tegu) {
+                this.nazva_tegu = nazva_tegu;
+                this.samozakryvayushyy = false;
+                this.tekst = '';
+                this.atrybuty = {};
+                this.styli = {};
+                this.vkladeni_elementi = [];
+            }
+
+            vstanovytyAtrybut(imya, znachennya) {
+                this.atrybuty[imya] = znachennya;
+            }
+
+            vstanovytyStyl(imya, znachennya) {
+                this.styli[imya] = znachennya;
+            }
+
+            dodatyVkladenyyyElementV_Kinets(element) {
+                this.vkladeni_elementi.push(element);
+            }
+
+            dodatyVkladenyyyElementV_Pochatok(element) {
+                this.vkladeni_elementi.unshift(element);
+            }
+
+            getHtml() {
+                var html = '<' + this.nazva_tegu;
+
+                for (var klyuch in this.atrybuty) {
+                    html = html + ' ' + klyuch + '="' + this.atrybuty[klyuch] + '"';
+                }
+
+                var styl_ryadok = '';
+                for (var stil_imya in this.styli) {
+                    styl_ryadok = styl_ryadok + stil_imya + ': ' + this.styli[stil_imya] + '; ';
+                }
+
+                if (styl_ryadok !== '') {
+                    html = html + ' style="' + styl_ryadok + '"';
+                }
+
+                if (this.samozakryvayushyy) {
+                    html = html + ' />';
+                } else {
+                    html = html + '>';
+
+                    if (this.tekst !== '') {
+                        html = html + this.tekst;
+                    }
+
+                    for (var i = 0; i < this.vkladeni_elementi.length; i = i + 1) {
+                        html = html + this.vkladeni_elementi[i].getHtml();
+                    }
+
+                    html = html + '</' + this.nazva_tegu + '>';
+                }
+
+                return html;
+            }
+        }
+
+        console.log('\nHTML-елементи для завдання 2');
+        var wrapper = new HtmlElement('div');
+        wrapper.vstanovytyAtrybut('id', 'wrapper');
+        wrapper.vstanovytyStyl('display', 'flex');
+
+        for (var j = 0; j < 2; j = j + 1) {
+            var blok = new HtmlElement('div');
+            blok.vstanovytyStyl('width', '300px');
+            blok.vstanovytyStyl('margin', '10px');
+
+            var h3 = new HtmlElement('h3');
+            h3.tekst = 'What is Lorem Ipsum?';
+
+            var img = new HtmlElement('img');
+            img.samozakryvayushyy = true;
+            img.vstanovytyStyl('width', '100%');
+            img.vstanovytyAtrybut('src', 'lipsum.jpg');
+            img.vstanovytyAtrybut('alt', 'Lorem Ipsum');
+
+            var p = new HtmlElement('p');
+            p.vstanovytyStyl('text-align', 'justify');
+            p.tekst = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ';
+
+            var a = new HtmlElement('a');
+            a.vstanovytyAtrybut('href', 'https://www.lipsum.com/');
+            a.vstanovytyAtrybut('target', '_blank');
+            a.tekst = 'More...';
+
+            p.dodatyVkladenyyyElementV_Kinets(a);
+
+            blok.dodatyVkladenyyyElementV_Kinets(h3);
+            blok.dodatyVkladenyyyElementV_Kinets(img);
+            blok.dodatyVkladenyyyElementV_Kinets(p);
+
+            wrapper.dodatyVkladenyyyElementV_Kinets(blok);
+        }
+
+        document.write(wrapper.getHtml());
+
+        // ЗАВДАННЯ 3
+
+        class CssClass {
+            constructor(nazva_klasu) {
+                this.nazva_klasu = nazva_klasu;
+                this.styli = {};
+            }
+
+            vstanovytyStyl(imya, znachennya) {
+                this.styli[imya] = znachennya;
+            }
+
+            vydalytyStyl(imya) {
+                delete this.styli[imya];
+            }
+
+            getCss() {
+                var css = '.' + this.nazva_klasu + ' {\n';
+                for (var klyuch in this.styli) {
+                    css = css + '    ' + klyuch + ': ' + this.styli[klyuch] + ';\n';
+                }
+                css = css + '}\n';
+                return css;
+            }
+        }
+
+        // ЗАВДАННЯ 4
+
+        class HtmlBlock {
+            constructor() {
+                this.styli = {};
+                this.korenevomu_element = null;
+            }
+
+            dodatyStyl(css_klas) {
+                this.styli[css_klas.nazva_klasu] = css_klas;
+            }
+
+            vstanovytyKorenevomu(element) {
+                this.korenevomu_element = element;
+            }
+
+            getCode() {
+                var kod = '<style>\n';
+                for (var klyuch in this.styli) {
+                    kod = kod + this.styli[klyuch].getCss();
+                }
+                kod = kod + '</style>\n';
+
+                if (this.korenevomu_element !== null) {
+                    kod = kod + this.korenevomu_element.getHtml();
+                }
+
+                return kod;
+            }
+        }
+
+        console.log('\nHTML-блок для завдання 4');
+        var blok = new HtmlBlock();
+
+        var klas_wrap = new CssClass('wrap');
+        klas_wrap.vstanovytyStyl('display', 'flex');
+
+        var klas_blok = new CssClass('block');
+        klas_blok.vstanovytyStyl('width', '300px');
+        klas_blok.vstanovytyStyl('margin', '10px');
+
+        var klas_img = new CssClass('img');
+        klas_img.vstanovytyStyl('width', '100%');
+
+        var klas_text = new CssClass('text');
+        klas_text.vstanovytyStyl('text-align', 'justify');
+
+        blok.dodatyStyl(klas_wrap);
+        blok.dodatyStyl(klas_blok);
+        blok.dodatyStyl(klas_img);
+        blok.dodatyStyl(klas_text);
+
+        var wrapper2 = new HtmlElement('div');
+        wrapper2.vstanovytyAtrybut('id', 'wrapper');
+        wrapper2.vstanovytyAtrybut('class', 'wrap');
+
+        for (var k = 0; k < 2; k = k + 1) {
+            var blok2 = new HtmlElement('div');
+            blok2.vstanovytyAtrybut('class', 'block');
+
+            var h3_2 = new HtmlElement('h3');
+            h3_2.tekst = 'What is Lorem Ipsum?';
+
+            var img2 = new HtmlElement('img');
+            img2.samozakryvayushyy = true;
+            img2.vstanovytyAtrybut('class', 'img');
+            img2.vstanovytyAtrybut('src', 'lipsum.jpg');
+            img2.vstanovytyAtrybut('alt', 'Lorem Ipsum');
+
+            var p2 = new HtmlElement('p');
+            p2.vstanovytyAtrybut('class', 'text');
+            p2.tekst = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ';
+
+            var a2 = new HtmlElement('a');
+            a2.vstanovytyAtrybut('href', 'https://www.lipsum.com/');
+            a2.vstanovytyAtrybut('target', '_blank');
+            a2.tekst = 'More...';
+
+            p2.dodatyVkladenyyyElementV_Kinets(a2);
+
+            blok2.dodatyVkladenyyyElementV_Kinets(h3_2);
+            blok2.dodatyVkladenyyyElementV_Kinets(img2);
+            blok2.dodatyVkladenyyyElementV_Kinets(p2);
+
+            wrapper2.dodatyVkladenyyyElementV_Kinets(blok2);
+        }
+
+        blok.vstanovytyKorenevomu(wrapper2);
+
+        document.write(blok.getCode());
+    </script>
+</body>
+</html>
