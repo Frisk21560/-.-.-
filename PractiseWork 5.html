@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Спадкування</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            margin: 5px;
+        }
+        .info-block {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Спадкування</h1>
+    
+    <script>
+        // ЗАВДАННЯ 1
+
+        // Базовий клас кнопки
+        class Button {
+            constructor(shyryna, vysota, tekst) {
+                this.shyryna = shyryna;
+                this.vysota = vysota;
+                this.tekst = tekst;
+            }
+
+            showBtn() {
+                var html = '<button style="width: ' + this.shyryna + 'px; height: ' + this.vysota + 'px;">';
+                html = html + this.tekst;
+                html = html + '</button>';
+                document.write(html);
+            }
+        }
+
+        // Кнопка з Bootstrap стилями
+        class BootstrapButton extends Button {
+            constructor(shyryna, vysota, tekst, kolir) {
+                super(shyryna, vysota, tekst);
+                this.kolir = kolir;
+            }
+
+            showBtn() {
+                var fon_kolir = '';
+                var tekst_kolir = 'white';
+                
+                if (this.kolir === 'primary') {
+                    fon_kolir = '#007bff';
+                } else if (this.kolir === 'success') {
+                    fon_kolir = '#28a745';
+                } else if (this.kolir === 'danger') {
+                    fon_kolir = '#dc3545';
+                } else if (this.kolir === 'warning') {
+                    fon_kolir = '#ffc107';
+                    tekst_kolir = 'black';
+                }
+
+                var html = '<button style="width: ' + this.shyryna + 'px; height: ' + this.vysota + 'px; background-color: ' + fon_kolir + '; color: ' + tekst_kolir + '; border-radius: 4px; font-weight: bold;">';
+                html = html + this.tekst;
+                html = html + '</button>';
+                document.write(html);
+            }
+        }
+
+        console.log('\nКнопки');
+        document.write('<h2>Кнопки</h2>');
+        
+        var btn1 = new Button(100, 40, 'Звичайна');
+        btn1.showBtn();
+        
+        var btn2 = new BootstrapButton(120, 40, 'Primary', 'primary');
+        btn2.showBtn();
+        
+        var btn3 = new BootstrapButton(120, 40, 'Success', 'success');
+        btn3.showBtn();
+        
+        var btn4 = new BootstrapButton(120, 40, 'Danger', 'danger');
+        btn4.showBtn();
+        
+        var btn5 = new BootstrapButton(120, 40, 'Warning', 'warning');
+        btn5.showBtn();
+
+        // ЗАВДАННЯ 2
+
+        // Базовий клас фігури
+        class Figura {
+            constructor(nazva) {
+                this.nazva = nazva;
+            }
+
+            get otrymaty_nazvu() {
+                return this.nazva;
+            }
+
+            vyvezyty_info() {
+                console.log('Фігура: ' + this.nazva);
+            }
+
+            obchyslyty_ploshchu() {
+                return 0;
+            }
+
+            obchyslyty_perimetr() {
+                return 0;
+            }
+        }
+
+        // Клас квадрата
+        class Kvadrat extends Figura {
+            constructor(storona) {
+                super('Квадрат');
+                this.storona = storona;
+            }
+
+            vyvezyty_info() {
+                console.log('Фігура: ' + this.nazva + ', сторона: ' + this.storona);
+            }
+
+            obchyslyty_ploshchu() {
+                return this.storona * this.storona;
+            }
+
+            obchyslyty_perimetr() {
+                return this.storona * 4;
+            }
+        }
+
+        // Клас прямокутника
+        class Pryamokutnik extends Figura {
+            constructor(shyryna, vysota) {
+                super('Прямокутник');
+                this.shyryna = shyryna;
+                this.vysota = vysota;
+            }
+
+            vyvezyty_info() {
+                console.log('Фігура: ' + this.nazva + ', ширина: ' + this.shyryna + ', висота: ' + this.vysota);
+            }
+
+            obchyslyty_ploshchu() {
+                return this.shyryna * this.vysota;
+            }
+
+            obchyslyty_perimetr() {
+                return (this.shyryna + this.vysota) * 2;
+            }
+        }
+
+        // Клас трикутника
+        class Trykutnyk extends Figura {
+            constructor(storona_a, storona_b, storona_c) {
+                super('Трикутник');
+                this.storona_a = storona_a;
+                this.storona_b = storona_b;
+                this.storona_c = storona_c;
+            }
+
+            vyvezyty_info() {
+                console.log('Фігура: ' + this.nazva + ', сторони: ' + this.storona_a + ', ' + this.storona_b + ', ' + this.storona_c);
+            }
+
+            obchyslyty_ploshchu() {
+                var p = (this.storona_a + this.storona_b + this.storona_c) / 2;
+                var ploshcha = Math.sqrt(p * (p - this.storona_a) * (p - this.storona_b) * (p - this.storona_c));
+                return ploshcha;
+            }
+
+            obchyslyty_perimetr() {
+                return this.storona_a + this.storona_b + this.storona_c;
+            }
+        }
+
+        console.log('\nГеометричні фігури');
+        document.write('<h2>Геометричні фігури</h2>');
+        
+        var figura1 = new Kvadrat(5);
+        var figura2 = new Pryamokutnik(4, 6);
+        var figura3 = new Trykutnyk(3, 4, 5);
+
+        var figury = [figura1, figura2, figura3];
+
+        for (var i = 0; i < figury.length; i = i + 1) {
+            figury[i].vyvezyty_info();
+            console.log('Площа: ' + figury[i].obchyslyty_ploshchu());
+            console.log('Периметр: ' + figury[i].obchyslyty_perimetr());
+            document.write('<div class="info-block">');
+            document.write('<strong>' + figury[i].otrymaty_nazvu + '</strong><br>');
+            document.write('Площа: ' + figury[i].obchyslyty_ploshchu() + '<br>');
+            document.write('Периметр: ' + figury[i].obchyslyty_perimetr());
+            document.write('</div>');
+        }
+
+        // ЗАВДАННЯ 3
+
+        // Розширений клас масиву
+        class ExtendedArray {
+            constructor() {
+                this.elementy = [];
+            }
+
+            push(element) {
+                this.elementy.push(element);
+            }
+
+            getString(rozdilenyk) {
+                var rezultat = '';
+                for (var i = 0; i < this.elementy.length; i = i + 1) {
+                    rezultat = rezultat + this.elementy[i];
+                    if (i < this.elementy.length - 1) {
+                        rezultat = rezultat + rozdilenyk;
+                    }
+                }
+                return rezultat;
+            }
+
+            getHtml(nazva_tegu) {
+                var html = '';
+                
+                if (nazva_tegu === 'li') {
+                    html = '<ul>';
+                    for (var i = 0; i < this.elementy.length; i = i + 1) {
+                        html = html + '<li>' + this.elementy[i] + '</li>';
+                    }
+                    html = html + '</ul>';
+                } else {
+                    for (var i = 0; i < this.elementy.length; i = i + 1) {
+                        html = html + '<' + nazva_tegu + '>' + this.elementy[i] + '</' + nazva_tegu + '>';
+                    }
+                }
+                
+                return html;
+            }
+        }
+
+        console.log('\nРозширений масив');
+        document.write('<h2>Розширений масив</h2>');
+        
+        var rozshyrenyy_mas = new ExtendedArray();
+        rozshyrenyy_mas.push('Яблуко');
+        rozshyrenyy_mas.push('Банан');
+        rozshyrenyy_mas.push('Апельсин');
+        rozshyrenyy_mas.push('Груша');
+
+        console.log('Рядок з комами: ' + rozshyrenyy_mas.getString(', '));
+        console.log('Рядок з тире: ' + rozshyrenyy_mas.getString(' - '));
+
+        document.write('<p>Рядок з комами: ' + rozshyrenyy_mas.getString(', ') + '</p>');
+        document.write('<p>HTML з тегом p:</p>');
+        document.write(rozshyrenyy_mas.getHtml('p'));
+        document.write('<p>HTML з тегом li:</p>');
+        document.write(rozshyrenyy_mas.getHtml('li'));
+    </script>
+</body>
+</html>

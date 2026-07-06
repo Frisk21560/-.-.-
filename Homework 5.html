@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Спадкування</title>
+</head>
+<body>
+    <h1>Спадкування</h1>
+    
+    <script>
+        // ЗАВДАННЯ 1
+
+        // Простий маркер
+        class Marker {
+            constructor(kolir, chornyla) {
+                this.kolir = kolir;
+                this.chornyla = chornyla;
+            }
+
+            druk(tekst) {
+                var vyvedenyy_tekst = '';
+                var i = 0;
+                while (i < tekst.length && this.chornyla > 0) {
+                    var symvol = tekst[i];
+                    if (symvol !== ' ') {
+                        this.chornyla = this.chornyla - 0.5;
+                    }
+                    vyvedenyy_tekst = vyvedenyy_tekst + symvol;
+                    i = i + 1;
+                }
+                var html = '<div style="color: ' + this.kolir + ';">' + vyvedenyy_tekst + '</div>';
+                document.write(html);
+                console.log('Залишилось чорнила: ' + this.chornyla + '%');
+            }
+        }
+
+        // Маркер, що заправляється
+        class ZapravljanyMarker extends Marker {
+            zapravyty() {
+                this.chornyla = 100;
+                console.log('Маркер заправлений');
+            }
+        }
+
+        console.log('\nМаркери');
+        var marker = new ZapravljanyMarker('red', 100);
+        marker.druk('Привіт світе!');
+        marker.zapravyty();
+        marker.druk('Це новий текст');
+
+        // ЗАВДАННЯ 2
+
+        // Масив назв місяців
+        var misyaci = ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
+        
+        // Масив назв днів
+        var dni_nazvy = ['Понеділок', 'Вівторок', 'Середа', 'Четвер', 'П\'ятниця', 'Субота', 'Неділя'];
+
+        class ExtendedDate extends Date {
+            // Виведення дати текстом
+            duzhe_prosto() {
+                var den = this.getDate();
+                var misyac = misyaci[this.getMonth()];
+                return den + ' ' + misyac;
+            }
+
+            // Перевірка минулої або майбутньої дати
+            ye_majbutnyu_abo_suchasna() {
+                var teper = new Date();
+                return this >= teper;
+            }
+
+            // Перевірка високосного року
+            ye_vysokisnyy_rik() {
+                var rik = this.getFullYear();
+                if ((rik % 4 === 0 && rik % 100 !== 0) || (rik % 400 === 0)) {
+                    return true;
+                }
+                return false;
+            }
+
+            // Наступна дата
+            nastupna_data() {
+                var nova_data = new Date(this);
+                nova_data.setDate(nova_data.getDate() + 1);
+                return nova_data;
+            }
+        }
+
+        console.log('\nРозширена дата');
+        var data = new ExtendedDate(2024, 5, 15);
+        console.log('Дата: ' + data.duzhe_prosto());
+        console.log('Майбутня або сучасна: ' + data.ye_majbutnyu_abo_suchasna());
+        console.log('Високосний рік: ' + data.ye_vysokisnyy_rik());
+        var nastupna = data.nastupna_data();
+        console.log('Наступна дата: ' + nastupna.duzhe_prosto());
+
+        // ЗАВДАННЯ 3
+
+        // Клас працівника
+        class Employee {
+            constructor(imya, postat, zarplata) {
+                this.imya = imya;
+                this.postat = postat;
+                this.zarplata = zarplata;
+            }
+        }
+
+        // Клас таблиці
+        class EmpTable {
+            constructor(pracivnyky) {
+                this.pracivnyky = pracivnyky;
+            }
+
+            getHtml() {
+                var html = '<table border="1">';
+                html = html + '<tr><th>Ім\'я</th><th>Посада</th><th>Зарплата</th></tr>';
+                
+                for (var i = 0; i < this.pracivnyky.length; i = i + 1) {
+                    html = html + '<tr>';
+                    html = html + '<td>' + this.pracivnyky[i].imya + '</td>';
+                    html = html + '<td>' + this.pracivnyky[i].postat + '</td>';
+                    html = html + '<td>' + this.pracivnyky[i].zarplata + '</td>';
+                    html = html + '</tr>';
+                }
+                
+                html = html + '</table>';
+                return html;
+            }
+        }
+
+        console.log('\nТаблиця працівників');
+        var emp1 = new Employee('Іван Петренко', 'Касир', 25000);
+        var emp2 = new Employee('Марія Козак', 'Менеджер', 35000);
+        var emp3 = new Employee('Петро Бандера', 'Директор', 50000);
+        
+        var pracivnyky = [emp1, emp2, emp3];
+        var tabl = new EmpTable(pracivnyky);
+        
+        document.write('<h2>Таблиця працівників</h2>');
+        document.write(tabl.getHtml());
+
+        // ЗАВДАННЯ 4
+
+        class StyledEmpTable extends EmpTable {
+            // Стилі для таблиці
+            getStyles() {
+                var css = '<style>';
+                css = css + 'table { border-collapse: collapse; width: 100%; }';
+                css = css + 'th { background-color: #4CAF50; color: white; padding: 12px; text-align: left; }';
+                css = css + 'td { padding: 12px; border-bottom: 1px solid #ddd; }';
+                css = css + 'tr:hover { background-color: #f5f5f5; }';
+                css = css + '</style>';
+                return css;
+            }
+
+            // Перевизначений метод для виведення
+            getHtml() {
+                return this.getStyles() + super.getHtml();
+            }
+        }
+
+        console.log('\nСтильована таблиця');
+        var styl_tabl = new StyledEmpTable(pracivnyky);
+        
+        document.write('<h2>Стильована таблиця працівників</h2>');
+        document.write(styl_tabl.getHtml());
+    </script>
+</body>
+</html>
