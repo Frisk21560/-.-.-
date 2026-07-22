@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Реєстрація та профіль</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- СТОРІНКА 1: РЕЄСТРАЦІЯ -->
+        <div id="storinka-registration" class="storinka active">
+            <h1>Registration</h1>
+            
+            <div class="registration-forma">
+                <label>Email:
+                    <input type="email" id="input-email" class="input-field">
+                    <span id="error-email" class="error-message"></span>
+                </label>
+
+                <label>Password:
+                    <input type="password" id="input-password" class="input-field">
+                    <span id="error-password" class="error-message"></span>
+                </label>
+
+                <label>Repeat:
+                    <input type="password" id="input-repeat-password" class="input-field">
+                    <span id="error-repeat" class="error-message"></span>
+                </label>
+
+                <button id="button-signup" class="button-signup">Sign Up</button>
+            </div>
+        </div>
+
+        <!-- СТОРІНКА 2: ПРОФІЛЬ -->
+        <div id="storinka-profile" class="storinka">
+            <div class="profile-header">
+                <span id="welcome-text" class="welcome-text"></span>
+                <a href="#" id="link-exit" class="link-exit">exit</a>
+            </div>
+
+            <h1>User info</h1>
+
+            <div class="profile-forma">
+                <div class="forma-ryadok">
+                    <div class="forma-kolonna">
+                        <label>First Name:
+                            <input type="text" id="input-firstname" class="input-field">
+                            <span id="error-firstname" class="error-message"></span>
+                        </label>
+                    </div>
+                    <div class="forma-kolonna">
+                        <label>Last Name:
+                            <input type="text" id="input-lastname" class="input-field">
+                            <span id="error-lastname" class="error-message"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="forma-ryadok">
+                    <div class="forma-kolonna">
+                        <label>Year of birth:
+                            <input type="number" id="input-year" class="input-field" min="1900">
+                            <span id="error-year" class="error-message"></span>
+                        </label>
+                    </div>
+                    <div class="forma-kolonna">
+                        <label>Gender:
+                            <select id="select-gender" class="input-field">
+                                <option value="">Виберіть стать</option>
+                                <option value="male">male</option>
+                                <option value="female">female</option>
+                            </select>
+                            <span id="error-gender" class="error-message"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="forma-ryadok">
+                    <div class="forma-kolonna">
+                        <label>Phone number:
+                            <input type="text" id="input-phone" class="input-field">
+                            <span id="error-phone" class="error-message"></span>
+                        </label>
+                    </div>
+                    <div class="forma-kolonna">
+                        <label>Skype:
+                            <input type="text" id="input-skype" class="input-field">
+                            <span id="error-skype" class="error-message"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <button id="button-save" class="button-save">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
