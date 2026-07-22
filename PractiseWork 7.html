@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Події</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .section {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        /*Таблиця */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table th, table td {
+            border: 2px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        table th {
+            background-color: #333;
+            color: white;
+            font-weight: bold;
+        }
+
+        table tr:not(:first-child):hover {
+            background-color: #ffcccc;
+        }
+
+        /*Захищений контент */
+        .protected-content {
+            background-color: #fffacd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        /*Like кнопка */
+        .like-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .like-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .like-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .like-button:active {
+            transform: scale(0.95);
+        }
+
+        .like-count {
+            margin-top: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        /*Калькулятор */
+        .calculator {
+            max-width: 400px;
+            margin: 20px auto;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .display {
+            background-color: #222;
+            color: #00ff00;
+            font-size: 2em;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: right;
+            word-wrap: break-word;
+            word-break: break-all;
+            min-height: 60px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .calc-btn {
+            padding: 20px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #444;
+            color: white;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        .calc-btn:hover {
+            background-color: #555;
+        }
+
+        .calc-btn.operator {
+            background-color: #ff9500;
+        }
+
+        .calc-btn.operator:hover {
+            background-color: #ffb143;
+        }
+
+        .calc-btn.equals {
+            background-color: #4caf50;
+            grid-column: span 2;
+        }
+
+        .calc-btn.equals:hover {
+            background-color: #45a049;
+        }
+
+        .calc-btn.clear {
+            background-color: #f44336;
+            grid-column: span 2;
+        }
+
+        .calc-btn.clear:hover {
+            background-color: #da190b;
+        }
+
+        /*Меню */
+        nav {
+            background-color: #333;
+            padding: 0;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .menu {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .menu-item {
+            position: relative;
+            padding: 0;
+        }
+
+        .menu-item > a {
+            display: block;
+            color: white;
+            padding: 15px 20px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .menu-item > a:hover {
+            background-color: #555;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #444;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            min-width: 200px;
+            border-top: 2px solid #007bff;
+            z-index: 1000;
+        }
+
+        .submenu.active {
+            display: block;
+        }
+
+        .submenu li a {
+            display: block;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .submenu li a:hover {
+            background-color: #555;
+            padding-left: 25px;
+        }
+
+        /*Список статей */
+        .articles-list {
+            margin-top: 15px;
+        }
+
+        .article {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #007bff;
+            border-radius: 4px;
+        }
+
+        .article h3 {
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        .article p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        #scrollToTop {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            z-index: 999;
+            transition: background-color 0.3s, transform 0.2s;
+            width: 50px;
+            height: 50px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        #scrollToTop:hover {
+            background-color: #0056b3;
+            transform: translateY(-5px);
+        }
+
+        #scrollToTop.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; margin-bottom: 30px; color: #333;">Завдання 7 - JavaScript Події</h1>
+
+    // ЗАВДАННЯ 1
+    <div class="section">
+        <h2>Завдання 1: Таблиця зі зміною фону при наведенні</h2>
+        <table id="mainTable">
+            <thead>
+                <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Company</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Bill</td>
+                    <td>Gates</td>
+                    <td>Microsoft</td>
+                </tr>
+                <tr>
+                    <td>Timothy</td>
+                    <td>Cook</td>
+                    <td>Apple</td>
+                </tr>
+                <tr>
+                    <td>Larry</td>
+                    <td>Page</td>
+                    <td>Google</td>
+                </tr>
+                <tr>
+                    <td>Mark</td>
+                    <td>Zuckerberg</td>
+                    <td>Facebook</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    // ЗАВДАННЯ 2
+    <div class="section">
+        <h2>Завдання 2: Захищений контент</h2>
+        <div class="protected-content">
+            <p><strong>What is Lorem Ipsum?</strong></p>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+            <p style="margin-top: 10px; color: #999; font-size: 12px;"> Виділення тексту та контекстне меню заборонені</p>
+        </div>
+    </div>
+
+   // ЗАВДАННЯ 3
+    <div class="section">
+        <h2>Завдання 3: Кнопка Like</h2>
+        <div class="like-container">
+            <button class="like-button" id="likeBtn">👍 Like</button>
+            <div class="like-count">
+                <span id="likeCount">0</span> лайків
+            </div>
+        </div>
+    </div>
+
+    // ЗАВДАННЯ 4 
+    <div class="section">
+        <h2>Завдання 4: Калькулятор</h2>
+        <div class="calculator">
+            <div class="display" id="calcDisplay">0</div>
+            <div class="buttons">
+                <button class="calc-btn clear" onclick="clearDisplay()">C</button>
+                <button class="calc-btn operator" onclick="appendToDisplay('/')">÷</button>
+                <button class="calc-btn operator" onclick="appendToDisplay('*')">×</button>
+                
+                <button class="calc-btn" onclick="appendToDisplay('7')">7</button>
+                <button class="calc-btn" onclick="appendToDisplay('8')">8</button>
+                <button class="calc-btn" onclick="appendToDisplay('9')">9</button>
+                <button class="calc-btn operator" onclick="appendToDisplay('-')">−</button>
+                
+                <button class="calc-btn" onclick="appendToDisplay('4')">4</button>
+                <button class="calc-btn" onclick="appendToDisplay('5')">5</button>
+                <button class="calc-btn" onclick="appendToDisplay('6')">6</button>
+                <button class="calc-btn operator" onclick="appendToDisplay('+')">+</button>
+                
+                <button class="calc-btn" onclick="appendToDisplay('1')">1</button>
+                <button class="calc-btn" onclick="appendToDisplay('2')">2</button>
+                <button class="calc-btn" onclick="appendToDisplay('3')">3</button>
+                <button class="calc-btn operator" onclick="appendToDisplay('.')">.</button>
+                
+                <button class="calc-btn" onclick="appendToDisplay('0')" style="grid-column: span 2;">0</button>
+                <button class="calc-btn operator" onclick="toggleSign()">+/−</button>
+                
+                <button class="calc-btn equals" onclick="calculate()">=</button>
+            </div>
+        </div>
+    </div>
+
+    // ЗАВДАННЯ 5
+    <div class="section">
+        <h2>Завдання 5: Меню з випадаючими списками</h2>
+        <nav>
+            <ul class="menu">
+                <li class="menu-item">
+                    <a onclick="toggleSubmenu(event, 0)">🏠 Головна</a>
+                    <ul class="submenu">
+                        <li><a href="#">Про нас</a></li>
+                        <li><a href="#">Контакти</a></li>
+                        <li><a href="#">Розташування</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item">
+                    <a onclick="toggleSubmenu(event, 1)">📦 Продукти</a>
+                    <ul class="submenu">
+                        <li><a href="#">Електроніка</a></li>
+                        <li><a href="#">Одяг</a></li>
+                        <li><a href="#">Книги</a></li>
+                        <li><a href="#">Спорт</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item">
+                    <a onclick="toggleSubmenu(event, 2)">📰 Блог</a>
+                    <ul class="submenu">
+                        <li><a href="#">Новини</a></li>
+                        <li><a href="#">Статті</a></li>
+                        <li><a href="#">Відгуки</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item">
+                    <a onclick="toggleSubmenu(event, 3)">⚙️ Налаштування</a>
+                    <ul class="submenu">
+                        <li><a href="#">Профіль</a></li>
+                        <li><a href="#">Безпека</a></li>
+                        <li><a href="#">Сповіщення</a></li>
+                        <li><a href="#">Вихід</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    // ЗАВДАННЯ 6
+    <div class="section">
+        <h2>Завдання 6: Список статей з кнопкою "Вгору"</h2>
+        <div class="articles-list" id="articlesList">
+        </div>
+    </div>
+
+    //  Кнопка "Вгору"
+    <button id="scrollToTop" onclick="scrollToTop()">↑</button>
+
+    <script>
+        // ЗАВДАННЯ 1: Таблиця
+        const table = document.getElementById('mainTable');
+        const cells = table.querySelectorAll('td');
+
+        cells.forEach(cell => {
+            const originalBg = cell.style.backgroundColor;
+
+            cell.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = '#ffcccc';
+            });
+
+            cell.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = originalBg;
+            });
+        });
+
+        // ЗАВДАННЯ 2: Захищений контент
+        const protectedContent = document.querySelector('.protected-content');
+
+        protectedContent.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            alert('Контекстне меню заборонене!');
+        });
+
+        protectedContent.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+        });
+
+        // ЗАВДАННЯ 3: Like кнопка
+        let likeCount = 0;
+        const likeBtn = document.getElementById('likeBtn');
+        const likeCountDisplay = document.getElementById('likeCount');
+
+        likeBtn.addEventListener('click', function() {
+            likeCount++;
+            likeCountDisplay.textContent = likeCount;
+            
+            // Анімація
+            this.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 100);
+            }, 100);
+        });
+
+        // ЗАВДАННЯ 4: Калькулятор
+        let calcDisplay = document.getElementById('calcDisplay');
+        let currentInput = '0';
+        let operation = null;
+        let previousValue = null;
+
+        function updateDisplay() {
+            calcDisplay.textContent = currentInput;
+        }
+
+        function appendToDisplay(value) {
+            if (currentInput === '0' && value !== '.') {
+                currentInput = value;
+            } else if (value === '.' && currentInput.includes('.')) {
+                return;
+            } else {
+                currentInput += value;
+            }
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentInput = '0';
+            operation = null;
+            previousValue = null;
+            updateDisplay();
+        }
+
+        function toggleSign() {
+            if (currentInput !== '0') {
+                currentInput = currentInput.startsWith('-') ? currentInput.slice(1) : '-' + currentInput;
+                updateDisplay();
+            }
+        }
+
+        function calculate() {
+            if (operation && previousValue !== null) {
+                let result;
+                const current = parseFloat(currentInput);
+                const previous = parseFloat(previousValue);
+
+                switch(operation) {
+                    case '+': result = previous + current; break;
+                    case '-': result = previous - current; break;
+                    case '*': result = previous * current; break;
+                    case '/': result = previous / current; break;
+                    default: return;
+                }
+
+                currentInput = String(result);
+                operation = null;
+                previousValue = null;
+                updateDisplay();
+            }
+        }
+
+        // Обробка операторів калькулятора
+        document.querySelectorAll('.calc-btn.operator').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.textContent === '=') return;
+                
+                if (operation && previousValue !== null) {
+                    calculate();
+                }
+                
+                previousValue = currentInput;
+                operation = this.textContent === '÷' ? '/' : 
+                            this.textContent === '×' ? '*' : 
+                            this.textContent === '−' ? '-' : this.textContent;
+                currentInput = '0';
+            });
+        });
+
+        // ЗАВДАННЯ 5: Меню
+        function toggleSubmenu(event, index) {
+            event.preventDefault();
+            const submenus = document.querySelectorAll('.submenu');
+            const currentSubmenu = event.target.nextElementSibling;
+
+            submenus.forEach((submenu, i) => {
+                if (i !== index) {
+                    submenu.classList.remove('active');
+                }
+            });
+
+            if (currentSubmenu) {
+                currentSubmenu.classList.toggle('active');
+            }
+        }
+
+        // Закриття меню при кліку поза меню
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.menu-item')) {
+                document.querySelectorAll('.submenu').forEach(submenu => {
+                    submenu.classList.remove('active');
+                });
+            }
+        });
+
+        // ЗАВДАННЯ 6: Список статей 
+        const articles = [
+            {
+                title: 'Введення в JavaScript',
+                text: 'JavaScript - це мова програмування, яка дозволяє додавати інтерактивність до веб-сторінок. Вона працює на стороні клієнта в браузері користувача.'
+            },
+            {
+                title: 'DOM та його маніпуляція',
+                text: 'Document Object Model (DOM) - це програмний інтерфейс для веб-документів. За допомогою JavaScript ми можемо змінювати, додавати та видаляти елементи DOM.'
+            },
+            {
+                title: 'События в JavaScript',
+                text: 'События дозволяють JavaScript реагувати на дії користувача, такі як клік мишею, натискання клавіш, прокручування сторінки тощо.'
+            },
+            {
+                title: 'Асинхронне програмування',
+                text: 'Асинхронне програмування дозволяє виконувати довгі операції без блокування основного потоку. Це важливо для забезпечення відзивчивості веб-додатків.'
+            },
+            {
+                title: 'REST API та Fetch',
+                text: 'Fetch API надає спосіб для отримання ресурсів по мережі. Це сучасна альтернатива XMLHttpRequest для роботи з веб-сервісами.'
+            },
+            {
+                title: 'Замикання у JavaScript',
+                text: 'Замикання - це функція, яка має доступ до змінних зовнішної функції. Це потужна особливість JavaScript, яка часто використовується.'
+            },
+            {
+                title: 'Стрілкові функції',
+                text: 'Стрілкові функції (arrow functions) - це компактний синтаксис для написання функцій. Вони також змінюють поведінку ключового слова this.'
+            },
+            {
+                title: 'Деструктуризація',
+                text: 'Деструктуризація дозволяє розпаковувати значення з масивів та об\'єктів в окремі змінні. Це зручний спосіб роботи з даними.'
+            },
+            {
+                title: 'Spread оператор',
+                text: 'Spread оператор (...) дозволяє розширювати масиви та об\'єкти. Він дуже корисний для копіювання та об\'єднання даних.'
+            },
+            {
+                title: 'Promise та Async/Await',
+                text: 'Promise та Async/Await - це способи управління асинхронним кодом. Вони роблять асинхронний код більш читаним та зрозумілим.'
+            },
+            {
+                title: 'Модулі у JavaScript',
+                text: 'Модулі дозволяють ділити код на окремі файли та переиспользовать їх. Це допомагає організувати великі проекти.'
+            },
+            {
+                title: 'Классы у JavaScript',
+                text: 'Классы надають синтаксис для об\'єктно-орієнтованого програмування. Вони улегшають створення та управління об\'єктами.'
+            }
+        ];
+
+        const articlesList = document.getElementById('articlesList');
+        articles.forEach((article, index) => {
+            const articleDiv = document.createElement('div');
+            articleDiv.className = 'article';
+            articleDiv.innerHTML = `
+                <h3>${index + 1}. ${article.title}</h3>
+                <p>${article.text}</p>
+            `;
+            articlesList.appendChild(articleDiv);
+        });
+
+        // Кнопка "Вгору"
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 100) {
+                scrollToTopBtn.classList.add('show');
+            } else {
+                scrollToTopBtn.classList.remove('show');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>
