@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Палітра кольорів</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Create new color</h1>
+        
+        <div class="forma-container">
+            <div class="forma-kolor">
+                <label>Color:
+                    <input type="text" id="input-color-name" placeholder="">
+                    <span id="error-color-name" class="error-message"></span>
+                </label>
+
+                <label>Type:
+                    <select id="select-type" class="select-type">
+                        <option value="RGB">RGB</option>
+                        <option value="RGBA">RGBA</option>
+                        <option value="HEX">HEX</option>
+                    </select>
+                </label>
+
+                <label>Code:
+                    <input type="text" id="input-code" placeholder="">
+                    <span id="error-code" class="error-message"></span>
+                </label>
+
+                <button id="button-save" class="button-save">Save</button>
+            </div>
+        </div>
+
+        <h2>All colors</h2>
+        <div id="paletka-list" class="paletka-list"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
