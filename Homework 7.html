@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форми</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navihacija">
+            <button class="nav-button active" data-zavdannya="1">Завдання 1</button>
+            <button class="nav-button" data-zavdannya="2">Завдання 2</button>
+            <button class="nav-button" data-zavdannya="3">Завдання 3</button>
+            <button class="nav-button" data-zavdannya="4">Завдання 4</button>
+            <button class="nav-button" data-zavdannya="5">Завдання 5</button>
+            <button class="nav-button" data-zavdannya="6">Завдання 6</button>
+        </nav>
+
+        <!-- ЗАВДАННЯ 1: ФОРУМ З ПОВІДОМЛЕННЯМИ -->
+        <div id="zavdannya-1" class="zavdannya-section active">
+            <h2>Завдання 1 - Форум</h2>
+            <div class="forum-container">
+                <div id="povidomlennya-list" class="povidomlennya-list"></div>
+
+                <div class="forma-dopovnennya">
+                    <h3>Додати нове повідомлення:</h3>
+                    <input type="text" id="input-imya" placeholder="Ваше ім'я" class="input-pole">
+                    <textarea id="input-povidomlennya" placeholder="Ваше повідомлення" class="textarea-pole"></textarea>
+                    <button id="button-dodaty-1" class="button-standart">Надіслати</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ЗАВДАННЯ 2: ТЕСТ -->
+        <div id="zavdannya-2" class="zavdannya-section">
+            <h2>Завдання 2 - Тест</h2>
+            <div id="test-container" class="test-container"></div>
+            <button id="button-vidpravyty-test" class="button-standart">Відправити тест</button>
+            <div id="rezultat-test" class="rezultat-test"></div>
+        </div>
+
+        <!-- ЗАВДАННЯ 3: СТИЛІЗОВАНИЙ ТЕКСТ -->
+        <div id="zavdannya-3" class="zavdannya-section">
+            <h2>Завдання 3 - Стилізований текст</h2>
+            <div class="stylizacija-forma">
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="chekbox-bold"> Жирний</label>
+                    <label><input type="checkbox" id="chekbox-underline"> Підкреслений</label>
+                    <label><input type="checkbox" id="chekbox-italic"> Курсив</label>
+                </div>
+                <div class="radio-group">
+                    <label><input type="radio" name="vyrivnyannya" value="left"> Ліворуч</label>
+                    <label><input type="radio" name="vyrivnyannya" value="right"> Праворуч</label>
+                    <label><input type="radio" name="vyrivnyannya" value="justify"> По ширині</label>
+                </div>
+                <textarea id="input-tekst-3" placeholder="Введіть текст" class="textarea-pole"></textarea>
+                <button id="button-pokazaty-3" class="button-standart">Показати текст</button>
+            </div>
+            <div id="rezultat-3" class="rezultat-3"></div>
+        </div>
+
+        <!-- ЗАВДАННЯ 4: МАГАЗИН КНИГ -->
+        <div id="zavdannya-4" class="zavdannya-section">
+            <h2>Завдання 4 - Магазин книг</h2>
+            <div class="magazyn-container">
+                <div class="knyzhky-vyybir">
+                    <h3>Виберіть книгу:</h3>
+                    <div id="knyzhky-list" class="knyzhky-list"></div>
+                </div>
+
+                <div class="forma-zamovlennya">
+                    <h3>Оформлення замовлення:</h3>
+                    <input type="number" id="input-kilkist" placeholder="Кількість екземплярів" min="1" class="input-pole">
+                    <input type="text" id="input-imya-4" placeholder="Ваше ім'я" class="input-pole">
+                    <input type="date" id="input-data-dostavky" class="input-pole">
+                    <input type="text" id="input-adresa" placeholder="Адреса доставки" class="input-pole">
+                    <textarea id="input-komentar" placeholder="Коментар" class="textarea-pole"></textarea>
+                    <button id="button-zamovyty" class="button-standart">Замовити</button>
+                </div>
+            </div>
+            <div id="rezultat-4" class="rezultat-test"></div>
+        </div>
+
+        <!-- ЗАВДАННЯ 5: ВІДМІТКА ПРИСУТНІХ -->
+        <div id="zavdannya-5" class="zavdannya-section">
+            <h2>Завдання 5 - Відмітка присутніх</h2>
+            <div class="vidmitka-container">
+                <div class="vyybir-para">
+                    <label>Група:
+                        <select id="select-grupa-5" class="select-pole">
+                            <option value="">Виберіть групу</option>
+                        </select>
+                    </label>
+                    <label>Пара:
+                        <select id="select-para-5" class="select-pole">
+                            <option value="">Виберіть пару</option>
+                        </select>
+                    </label>
+                    <button id="button-vybrat-5" class="button-standart">Вибрати</button>
+                </div>
+
+                <div id="forma-vidmitky" class="forma-vidmitky" style="display: none;">
+                    <input type="text" id="input-tema-5" placeholder="Тема заняття" class="input-pole">
+                    <div id="studenty-list" class="studenty-list"></div>
+                    <button id="button-zberegty-5" class="button-standart">Зберегти</button>
+                </div>
+
+                <div class="glyan-vidmitky">
+                    <h3>Вже відмічені пари:</h3>
+                    <div id="glyan-vidmitky-list" class="glyan-vidmitky-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ЗАВДАННЯ 6: БРОНІЮВАННЯ КВИТКІВ -->
+        <div id="zavdannya-6" class="zavdannya-section">
+            <h2>Завдання 6 - Броніювання квитків на поїзд</h2>
+            <div class="bronuvannya-container">
+                <div class="vyybir-marshrutu">
+                    <label>Напрямок:
+                        <select id="select-marshrutа-6" class="select-pole">
+                            <option value="">Виберіть напрямок</option>
+                        </select>
+                    </label>
+                    <label>Дата:
+                        <input type="date" id="input-data-6" class="input-pole">
+                    </label>
+                    <button id="button-poshuk-6" class="button-standart">Пошук</button>
+                </div>
+
+                <div id="mistsya-dlya-brony" class="mistsya-dlya-brony" style="display: none;">
+                    <h3>Виберіть місця:</h3>
+                    <div id="sitka-mists" class="sitka-mists"></div>
+                    <p>Загальна ціна: <span id="zagalna-tsina-6">0</span></p>
+                    <button id="button-bronuvaty-6" class="button-standart">Забронювати</button>
+                </div>
+
+                <div class="glyan-kvytky">
+                    <h3>Мої квитки:</h3>
+                    <div id="glyan-kvytky-list" class="glyan-kvytky-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
